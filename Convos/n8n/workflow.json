@@ -1,0 +1,78 @@
+{
+  "name": "Local Medical Transcription → Prescription Generator",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Audio Upload Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 300],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "transcribe",
+        "responseMode": "onReceived",
+        "responseData": "allEntries"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Run WhisperX (Local)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [600, 300],
+      "parameters": {
+        "command": "python",
+        "arguments": "-m whisperx /data/audio.wav --diarize --output_format json --output_dir /data/output"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Read WhisperX Output",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [900, 300],
+      "parameters": {
+        "filePath": "/data/output/audio.json"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Generate Prescription (Ollama)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [1200, 300],
+      "parameters": {
+        "url": "http://localhost:11434/api/generate",
+        "method": "POST",
+        "jsonParameters": true,
+        "options": {},
+        "body": {
+          "model": "medllama",
+          "prompt": "Generate a detailed medical prescription based on this doctor-patient conversation:\n{{ $json.transcript }}\nReturn JSON with diagnosis, medicines, and dosage."
+        }
+      }
+    },
+    {
+      "id": "5",
+      "name": "Return Final Result",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1500, 300],
+      "parameters": {
+        "responseBody": {
+          "conversation": "={{ $json.transcript }}",
+          "prescription": "={{ $json.text }}"
+        },
+        "responseContentType": "application/json"
+      }
+    }
+  ],
+  "connections": {
+    "Audio Upload Webhook": { "main": [[{ "node": "Run WhisperX (Local)", "type": "main", "index": 0 }]] },
+    "Run WhisperX (Local)": { "main": [[{ "node": "Read WhisperX Output", "type": "main", "index": 0 }]] },
+    "Read WhisperX Output": { "main": [[{ "node": "Generate Prescription (Ollama)", "type": "main", "index": 0 }]] },
+    "Generate Prescription (Ollama)": { "main": [[{ "node": "Return Final Result", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

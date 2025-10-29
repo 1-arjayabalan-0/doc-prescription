@@ -1,0 +1,92 @@
+{
+  "name": "WhisperX Transcription (Windows Save & Run)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "transcribe",
+        "options": {
+          "binaryData": true
+        }
+      },
+      "id": "1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "operation": "binaryToFile",
+        "sourceKey": "file",
+        "fileName": "C:\\\\uploads\\\\{{ $binary.file.fileName }}"
+      },
+      "id": "2",
+      "name": "Save Uploaded Audio",
+      "type": "n8n-nodes-base.moveBinaryData",
+      "typeVersion": 1,
+      "position": [550, 300]
+    },
+    {
+      "parameters": {
+        "command": "call C:\\path\\to\\ai-voice\\Scripts\\activate && python -m whisperx \"C:\\uploads\\{{ $binary.file.fileName }}\" --output_dir C:\\uploads\\output --model large-v2 && type C:\\uploads\\output\\{{ $binary.file.fileName.split('.')[0] }}.txt"
+      },
+      "id": "3",
+      "name": "Run WhisperX (Windows)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "responseBody": "={{ $json[\"stdout\"] }}",
+        "options": {
+          "responseContentType": "text/plain"
+        }
+      },
+      "id": "4",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1100, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Save Uploaded Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Uploaded Audio": {
+      "main": [
+        [
+          {
+            "node": "Run WhisperX (Windows)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run WhisperX (Windows)": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "WhisperX_Windows_Save_Run"
+}
