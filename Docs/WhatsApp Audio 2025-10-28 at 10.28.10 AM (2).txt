@@ -1,0 +1,170 @@
+(Transcribed by TurboScribe.ai. Go Unlimited to remove this message.)
+
+(0:00 - 0:12)
+Yeah, who's the doctor? So there's two parts of any medical practice. One is the administrative part, which is the front desk. So when you come to a practice, it's about an experience.
+
+(0:13 - 16:01)
+When you're talking about experience, you're talking about efficiency in the front desk, in terms of patient referral, feedbacks, and that type of work. So it's very important. So if you're looking at a booking system or a way to do the doctor's diary in the front, So if you're looking for appointment basis, so how appointment basis happens at the medical practice One, is someone telephonically calls and asks for a booking appointment Two is personal, which is walking, people who are walking and say I need to see the doctor Can you accommodate me? And the third thing is online bookings We have a lot of time now, the online bookings where you can do it by your website or by Whatsapp I'm not sure what is the most cost effective tool to do an online booking Where you have your diary online, people must log in So basically most and average doctors work on a 15 minute interval If you're looking at starting hours So 15 minutes or if you want to then obviously the system needs to be able to allow you to Maybe do a double consult where you're dealing with a mental health issue If you're counselling then you'll probably take 2 out of 15 minutes So on average your interval between doctors should be about 15 minutes 15 to 20 minutes is obviously in terms of good time, in terms of taking an adequate patient history And in terms of examination So you're looking at an average between 15 to 20 minutes So those are your three points So telephonic someone calls, obviously they will telephonically enter stuff on the system In terms of personal, I'm not sure whether two ways of doing personal One, patient comes in and then whether you can also create a biometrics So next time they come, you put a time print and everything comes up on the system Or you can generate what's called a card system Where if someone registers the thing, you create a card Each time they come in, they swipe the card Automatically everything goes in and they go into a queueing system I'm not sure you're talking about efficiency So either biometrics or card system or someone So what is that biometric you're talking about? So if someone comes in now, they want to come in and they want to So you need a biometric here? So once they put the biometric Everything comes up, your patient history is on file Automatically you go into the system Or you create a file Otherwise it means someone manually entering your name, details, everything So basically that's the first thing How do you make the system more efficient for you? 100% That works better Because we don't need to type or do anything So either you create or generate a card I'm not sure what's the cost of that Each time a new patient comes in You give them a value of health card with your details Like a banking card They come in, they touch the card Or they swipe or whatever Automatically when they come in, they use the card They touch it, the patient's history is on Obviously on the generational system So normally what we do In private hospitals, they use biometrics You put your finger there Everything comes up from your history So either biometrics or you use a card system A swiping system Like a bank card Online is that what we need to obviously 100% I think you You're giving more advanced thought process Because that's what we need to develop Like more efficiency I thought about everything Biometric is feasible Even card is feasible Anything Whichever is the top Like our system must be the number one And that's what I was looking at So that's what you look at So when people come in person You generate the cards You give them a card There's your card feature You come, you swipe here You swipe automatically It will already be loaded into a queueing system For your doctor Or if you want all your medical needs The disadvantage is that If you produce a card They need to keep the card If they don't bring the card Then again you have to type But I think biometric is Is more efficient They come and they put the thumb Or if you want both The card as well as biometric That's even better So look at the costing also What works and what doesn't Exactly You need to look at what works and what doesn't That is important also Which is more cheaper But the best technology That's important Look at that So the online booking We need to look at different Whether to book by website WhatsApp or SMS So once you Once you book an appointment The process Step two is You need to get an information sheet That's sent to the patient Either by If you're doing it online If you're doing it telephonically Once you enter the patient's details Contact details of the system Then you should be able to Generate the patient So what we do now When patients come I'll show you the sheet that we Yeah Just say it's time now So if you If they obviously Once they confirm the appointment We send them something by SMS Or WhatsApp Whatever the best communication With the patient Then you generate a tick box Going forward Like how you enter all your details Surname, ID number Alternate number, address Email address Occupation But it's I want to update this Into a more effective So what we need to do So in the appointment book You get a A little information thing That you can pull Online And submit So it comes back to the system Or wherever Even for the appointment They put the patient name And the mobile number Contact number Yeah So that will That will actually Connect to our system It will enter all the details So within like two minutes You get an information sheet To come So what happens Patients don't have to search yet Pull manually this form Okay So you want the tablet kind of thing A tablet So either you If one Two things If you do it online You need to After you confirm the appointment You get an information sheet You put it in You submit It comes back to the Up Yeah But the time the patient comes The patient not sitting In your waiting room Yeah Okay So you can create A generation thing Okay step two So you get an information sheet That's sent to you after Maybe 30 seconds Of confirming that you Booked an appointment Okay You understand So same thing What they do They can read on their cell phones And submit Okay or If they come here manually We'll give them a little tablet They can just enter Everything online So obviously everything Is synced Whatever they enter The tablet is going directly On to your Your appointment register Is that possible Yeah Okay So once All the information Is sent Then you get also Because also What's important Is your medical details Also very important So by the time You come here The staff will Already confirm Whether you got benefits All the staff Whether you need To treat the cat patient So that's why It also makes the system Very efficient Because once you Enter all the information So obviously Whatever information We're putting Also is Very important In terms of The PAPI Act What's allowed And what's not allowed So we need to work In alignment With the PAPI Act Especially with Patient information So we need to know What the PAPI Act is And how we align Ourself In terms of getting All this information From the patient So actually PAPI Act It's not stopping you If they Actually come And give Their details Because Without their consent We mustn't Keep it But what we do We say that We're storing This information For our Purpose only Maybe we'll put The terms and conditions They can So there must be A term and condition In terms of The way we align Ourself Yeah we can Actually because They are capturing it They capturing it Not us capturing It is the Patient is capturing That is the So they can't Say anything Or even if you Want us to Put a signature We can ask them But I think If they accept it It's kept And they automatically Accept it So we need To have something When we're sending Other things That obviously Some term or condition That we always see In realigning Ourselves with the PAPI Act And this is what To follow from there Okay So this is basically Part of the Appointment system I'll get back To the other stuff I wanted also The system to do In terms of What's important Was to have In terms of From an information Point of view Okay So the The race is Very, very important Okay Whether you're Indian, white, black Colored Because that also Picks your Disease process In terms of Demographics Okay Okay That's fine Male and female Is very important Also male and female Is also important In terms of practice If you're getting A higher Female patient base Coming Then you might Consider a female Practitioner To deal with Other stuff Okay Your date of birth Is very important Because what I want The system to Generate in time Is if Your date of birth If it's your birthday You know Valley health Team wishes A happy birthday And stuff like that So it's also I'm trying to Create a first Relationship With my patient Yeah Very, very important Okay So birthday So the system Generates Birthday messages When it's someone's Birthday Okay New and old Patients are very, very Important Part of your Information On your Retronic capture Because your new Patient to your old Patient ratio Will give you A growth rate Of your practice Okay Which is very, very Important You know You want to know What your new Patient tells you How fast Your practice Is going Okay Okay So you need To know that Okay So ratio to old To new Will give you A growth rate Of your practice Address is very, very Important Because from a demographic Point of view You know what your Drainage area is Yeah When your patients Are coming in from How far your Drainage Very, very important In terms of Also from a marketing Point of view You need to know You suddenly get A lot of patients Coming in from red-cliffs And you can put Something in the red-cliff Upper Iowa area So you can start Marketing yourself Okay Your contact details Also emails Whether it's Telephone numbers Very, very important Because that's how We basically keep in Contact with the patients Also your Medical What you want To know From your Patients Whether it's Medicaid or Cash Okay Okay So you need To know Medicaid Or cash Based on your System And then also Very, very Important To generate Your disease Process Everything Should have A ICD-10 Code ICD-10 code Is basically What medical Doctors use In order for Diagnosis What is it IC ICD-10 ICD-10 It's an International Coding For disease Process For medical Doctors Okay Like if you Come with If you Come with The flu It's J45.9 If you're Diabetic It's E11.9 You've got Cholesterol E78.5 So it's a Coding system So it's very, very Important to have That in front of Your When you're Taking Inflammation But this Is who Will be Entered So this Needs to be Entered After you Consult the Doctor Okay So How much Patients Did you See You want So basically Total number Of patients You want To know What's the EFT Because you Entering EFT Amount With the Patient You want To know What the Cash Takings Of the Practice And you want To know Your daily Rating Of the Practice Okay So All Of the Things I've Given You In Terms Of Variables That you Want To Have From The Front Desk This Is what The Front Desk Is What The Front Desk Is What The Front Desk Is What The Front Desk Is What The Front Desk Is What The Front Desk Is The Front Desk Is What The What The Desk What The Is What The Front Desk Is What The Front Desk Is What Front Desk Is What The Front Is What The Front Desk Is What The Front Desk Is What The Front Desk Is What So that can come in the form of a pie graph, after you get all the... Sorry, pie graph? What is it? So pie graph is that where you get a... a pie graph is something like this where you get a... No, no, I know the pie graph.
+
+(16:01 - 16:29)
+Yeah, yeah. But that will give you a breakdown of... your crest might be 20% of your patient's care volume. Oh, so you need it based on the... Demographic criteria. 
+
+So, so might be proof will be 10%, whatever. So you know where you basically... where you're draining from on a monthly basis, not on a daily basis, okay? And then your... you also want to know your medical aid to cash ratio end of the month. Now, number of medical aid patients, number of cash patients, okay? So that's very, very important at the end of it.
+
+(16:29 - 16:41)
+Then also what you want on your monthly report, you want your complete EFT takings, which is your... part of your income. You want your complete cash taking. And you want the money that's owed at the end of the month, if you gave anyone pounds.
+
+(16:41 - 17:01)
+What's outstanding amount is on the monthly basis, okay? From a cash flow point of view, okay? And then also you want, in terms of the number of patients every day, you can have one from January to December in a bar graph. Every number of patient numbers, every number. You know where you... obviously seasonal, like certain periods in June, you may find that you're busier.
+
+(17:02 - 17:14)
+It might be in September, your pie graph's low, then you can take leave in that period. So it's very important where your... where your number of patients are. So you need a comparison pie graph from January to December on the number of patients seen in your practice.
+
+(17:14 - 17:24)
+Okay. Okay, so that's... will give you a very holistic thing of what private practice in terms of that will take upon of you. We'll cover most of it, what exactly you need.
+
+(17:24 - 17:39)
+Yeah, yeah. So any doctor having this type of information, it's really, really good because it tells you everything from your growth rate, your number of... But is the current system is not providing all of this? No. Because we... now you're speaking to a doctor.
+
+(17:39 - 17:50)
+When people develop a system, they have some idea... Yeah, same thing like what we're doing now. And then you come. But if you get a system, I'll give you a very comprehensive thing about what the front desk would be allowing important.
+
+(17:50 - 18:07)
+Because any day, all the... you can give me an order of what I'm asking for. For me, I did one thing, in my 10 report upfront, I can sit in within 10 minutes. I've got everything in terms of my growth rate, where I'm going, what's happening in my practice, what's money outstanding, how much do I make in cash, what's my Medicaid patient base to cash ratio.
+
+(18:08 - 18:21)
+Really, really important, we think, because I can plan my practice way and move way forward. Exactly. Okay, so... Also, what I was thinking here, because you don't know right now, how many patients you're losing.
+
+(18:21 - 18:44)
+Yeah. Because what the system which we're going to develop, I even mentioned to my team, whatever appointment comes through, first ask the patient to create the contact first. And then once you save the contact, and the date, which date they want the appointment, then you tell them whether these days they're busy or not.
+
+(18:44 - 18:57)
+When you select the date, then you save those appointments already. And then you show the slot. So which means, there's 20 people booking, but you only accommodate 10 people.
+
+(18:58 - 19:09)
+And the rest 10, it didn't come. Those kind of information can be only tracked, only when they select the appointment date, we create the record in the system. Yeah.
+
+(19:10 - 19:25)
+That's also very important. Also, if you're looking at your dates, then you need to have color coding on your system. Because once you book the appointments, and then once you come into... So you got appointments today, then you also need to go, once you come into the practice, you need to click on to, because you're booking.
+
+(19:25 - 19:31)
+So it gives you a yellow ring, so it tells you people waiting in the waiting area. Okay. Three people waiting, four people waiting.
+
+(19:32 - 19:41)
+No, you will see it on the system. You already got it already. Yeah, because you will see it, when you are in the house, you can see that there's three people already checked in.
+
+(19:41 - 19:43)
+Yeah. Into your premise. Yeah.
+
+(19:43 - 19:46)
+So there are three waiting. Yeah. Yeah, okay.
+
+(19:46 - 19:54)
+So like that. So what I'm going to do, with time, with the system, I'm going to have like a monitor in the front here. So even if I'm checking now, I can see the four people waiting.
+
+(19:55 - 19:59)
+I know, you know what, I need to be a little more quicker now. Oh, okay. You know how those people are, the appointments are.
+
+(19:59 - 20:09)
+So I'll have a monitor, as a monitor, basically a patient book for the patients that come in the morning. And then once you come into the waiting area, you have like a yellow ring, people waiting. Okay.
+
+(20:09 - 20:14)
+And once it goes red, it means people are waiting more than 15, 20 minutes. You know, it's obviously past the appointment time. Oh, okay.
+
+(20:14 - 20:26)
+Then I need to know, okay, now I've got three red people. Now, the people, the system also, when people get prostate, if you've booked a night appointment, and you're half past nine, you're still sitting in the doctor's room. Yeah, that's right.
+
+(20:26 - 20:38)
+You know, so if you color code green, yellow, and red, then you'll know how quick you need to be with moving your patient forward. Yeah. You know, so on a monitor, it's like a lamp, you know what I mean.
+
+(20:38 - 20:41)
+Oh, that's really good. Yeah. Yeah, that's really good.
+
+(20:44 - 20:55)
+Oh, that makes sense. So once you book your green, when your appointments are booked for the day, the yellow is in the waiting area. The red is when you're going past the waiting period, but we have another appointment date, appointment time.
+
+(20:55 - 21:04)
+So then you know how much you need to cover up quickly in order to make sure you're keeping your patient. You don't want to be a lot of yellows. You don't want to be a lot of reds sitting in your practice.
+
+(21:04 - 21:07)
+Oh, 100%. Yeah. You're right.
+
+(21:07 - 21:14)
+That makes a big difference. Yeah. And plus, it improves more patients for you as well.
+
+(21:15 - 21:21)
+It improves patients, but also patients get frustrated. Sometimes, you know, patients wait an hour waiting with people because other things to do. They've got kids to pick up at school.
+
+(21:22 - 21:30)
+Then you need to know. Otherwise, you need to change your slotting time in terms of time intervals. So that's why all those things give you some idea about efficiency and also the practice.
+
+(21:31 - 21:43)
+At the end of the day, remember, I'm also going to go, I'm going to kind of give up all the files to you. So I'll look at your administration system from the front desk. In time, what we need to build in is also a billing system, which I've got Albridge for now.
+
+(21:44 - 21:54)
+What is that, Albridge? Albridge. For me, obviously, they are H-E-A-L-T and B-R. H-E-A-L-T-H-L.
+
+(21:54 - 22:03)
+H-E-A-L-T-H-L? Yeah, Albridge, B-R-I-D-D. Albridge, okay. But that's the software I'm using now, but that software is mainly for billing purposes.
+
+(22:04 - 22:23)
+That's the software I'm going to create my electronic files on. I mean, you drive it now, so as I'm talking to you, I'm not going to write what's wrong. So as I talk, it converts everything into a written platform that we say that... So you speak, and it must write? Yeah.
+
+(22:24 - 22:40)
+And what, is there a prescription? So basically, you see, my filing rooms are full. I don't have any more place for manual things. So I'm trying to create a system now where I go onto a cloud-based system and do everything electronically.
+
+(22:41 - 23:01)
+Oh, so you wanted to cancel through the... Files. So once the files are open in the front, it will be digital files now. Once it comes to me, then obviously I would obviously have another... I think also digital files.
+
+(23:01 - 23:16)
+I don't know whether in the front, when you open the files, to write what the patient is allergic to or anything. Or maybe to receive... But that would take too long. But anyway, what we'll do... No, no, the digital... The moment when you say... Okay, I'm trying to understand.
+
+(23:17 - 23:33)
+You wanted to write a prescription, or you wanted to cancel remotely? So basically, what we do now is creating efficiency in terms of booking patients to come to you. Yes. Okay, the other part of the practice, which is the second part, which is the major part, is obviously creating digital files.
+
+(23:33 - 23:43)
+Instead of me writing now, I need to create a... There won't be any written now. There will be digital files. So as I'm talking, there's a thing called Dragon.
+
+(23:43 - 23:47)
+I don't know if you've heard of Dragon before. It's a software. Yeah, spell it for me.
+
+(23:47 - 23:57)
+Dragon, D-R-A-G... D-R-A-G? D-R-A-G-O-N, Dragon. Dragon? Yeah, software. So what it does... Oh, it's a Dragon software.
+
+(23:57 - 24:03)
+Yeah. So what it does, it converts all my verbal into written. Okay.
+
+(24:03 - 24:15)
+So if you come to me, I'll ask you, so what's happening? You tell me, okay, so as I'm talking, it's creating a... It's converting my verbal into written. Okay. It's making me notes.
+
+(24:16 - 24:22)
+Okay. Okay, so that's the way I want to go. So in a day also, so in a day it's fine.
+
+(24:22 - 24:46)
+So once I do the clinical platform, it goes back to the front desk, they double check everything, and then it's up and running for building purposes. Okay, so what I'm trying to do, the second part of my... So basically, I'm sitting with you in terms of the booking, the front desk diary for the patient, in terms of efficiency, in terms of tracking, this and that. Okay? But then the other big part is the clinical part of the practice.
+
+(24:46 - 24:56)
+This is where I'm using Albridge. Okay. Albridge is what I'm using for building purposes and also to create a digital platform for my clinical notes to be stored on cloud.
+
+(24:57 - 25:27)
+So I don't have manual files anymore. Okay. Okay, but that's also... That's another thing where most people in... So you've got MEDIS, you've got Albridge, you've got... There's about six software companies that deal with doctors' practices but mainly from a billing point of view for Medicaid purposes and also for... They also create a digital platform where you can store information, which is something new.
+
+(25:27 - 25:34)
+This is all... What I'm talking to you about is all the latest stuff now. Okay. So... But currently, they only store the digital information.
+
+(25:35 - 25:45)
+They're storing digital information. So it's something... I'm not saying new. I mean, in the last two years they started now converting doctors' art copies into digital files.
+
+(25:45 - 26:06)
+Okay. You understand? So if a patient comes in, for now, you open an appointment there then automatically it will come into a queueing system. The patient comes to me, I open the thing, I've got a laptop, I can see all the information what the patient's talking about but I'm not going to be typing because as I'm talking I'll say blood pressure, 180, automatically it'll go blood pressure, respiration, as I'm talking.
+
+(26:07 - 26:17)
+Main symptoms... So what the doctors use is what's called a RICE method. It's called R-I-C-E. So this is what is basically we use for in terms of getting patients RICE.
+
+(26:17 - 26:55)
+The reason for you visiting me today you tell me, okay, doc, I've got a course I'll say, okay, patient presenting on the 28th of July presenting with cough, fever, sore throat and that, whatever, okay? Then inspection on examination I find the patient heart rate, BP, blood pressure, chest is clear, cardio sounds normal, heart rate is normal, that's my expectation. Okay. Then C is obviously the... So, reason for seeing the doctor, I is for inspection, C is for... What's a C? C is for? Is it a cost? No, not a cost, it's a... Cure.
+
+(26:56 - 26:57)
+Actually, now, okay.
+
+(Transcribed by TurboScribe.ai. Go Unlimited to remove this message.)

@@ -1,0 +1,84 @@
+#Pneumonia (Severe Chest Infection)
+conversation = [
+    {"role": "doctor", "text": "Good morning. Please come in. What’s troubling you today?"},
+    {"role": "patient", "text": "Good morning, Doctor. I’ve been having high fever, cough, and chest pain for the past four days."},
+    {"role": "doctor", "text": "Do you have any phlegm while coughing?"},
+    {"role": "patient", "text": "Yes, it’s thick and yellow. I also feel breathless sometimes."},
+    {"role": "doctor", "text": "Alright. Any chills or sweating at night?"},
+    {"role": "patient", "text": "Yes, quite often."},
+    {"role": "doctor", "text": "It seems you have a lung infection — pneumonia. We’ll need to start strong antibiotics."},
+    {"role": "doctor", "text": "I’ll prescribe Azithromycin 500 mg once daily for five days, and a cough syrup with expectorant."},
+    {"role": "doctor", "text": "Also take Paracetamol 650 mg if fever crosses 100 degrees. You must rest well and drink plenty of fluids."},
+    {"role": "patient", "text": "Okay, Doctor. Do I need to get any tests done?"},
+    {"role": "doctor", "text": "Yes, a chest X-ray and blood test for infection. If breathing becomes harder, come immediately."},
+    {"role": "doctor", "text": "I’ve written your diagnosis as 'pneumonia – chest infection'. Follow the medicines and we’ll review in three days."},
+    {"role": "patient", "text": "Thank you, Doctor. I’ll do that."}
+]
+
+
+#Dengue Fever
+conversation = [
+    {"role": "doctor", "text": "Hello, please have a seat. What’s the issue today?"},
+    {"role": "patient", "text": "Doctor, I’ve had high fever for three days, with body pain and headache. My eyes hurt too."},
+    {"role": "doctor", "text": "Did you check your temperature or do any tests?"},
+    {"role": "patient", "text": "Yes, I did a dengue test yesterday. It came positive."},
+    {"role": "doctor", "text": "Alright. That explains your symptoms. Dengue causes high fever, joint pain, and weakness. We’ll monitor your platelets closely."},
+    {"role": "doctor", "text": "Drink lots of fluids — coconut water, soups, ORS — and take Paracetamol 650 mg if fever comes."},
+    {"role": "doctor", "text": "Avoid painkillers like ibuprofen, as they can lower platelets further."},
+    {"role": "patient", "text": "Okay, Doctor. Will I need to be admitted?"},
+    {"role": "doctor", "text": "Not right now, but if your fever worsens or you feel bleeding gums or stomach pain, come to the hospital immediately."},
+    {"role": "doctor", "text": "I’ve noted it as 'Dengue fever'. You’ll recover in a week with rest and fluids."},
+    {"role": "patient", "text": "Thank you, Doctor. I’ll take care."}
+]
+
+
+#Diabetes Complication (Foot Infection)
+conversation = [
+    {"role": "doctor", "text": "Good morning, Mr. Ramesh. How are you managing your sugar levels?"},
+    {"role": "patient", "text": "Not so good, Doctor. My sugar is high again and I’ve got a small wound on my right foot that isn’t healing."},
+    {"role": "doctor", "text": "Since when do you have that wound?"},
+    {"role": "patient", "text": "Almost ten days. It’s not drying up, and sometimes pus comes out."},
+    {"role": "doctor", "text": "That’s concerning. In diabetes, wounds can take longer to heal and may get infected."},
+    {"role": "doctor", "text": "We’ll clean and dress it properly. I’ll start you on Amoxiclav 625 mg three times a day for one week."},
+    {"role": "doctor", "text": "Also, check your blood sugar twice daily and continue your Metformin and Glimepiride tablets."},
+    {"role": "patient", "text": "Okay, Doctor. Should I walk or rest my leg?"},
+    {"role": "doctor", "text": "Avoid pressure on that foot. Keep it clean and dry. Come every two days for dressing."},
+    {"role": "doctor", "text": "I’ve written it as 'diabetic foot infection'. Take care; we’ll monitor your healing closely."},
+    {"role": "patient", "text": "Thank you, Doctor. I’ll follow your advice."}
+]
+
+#Hypertension with Chest Discomfort (Possible Heart Issue)
+conversation = [
+    {"role": "doctor", "text": "Good evening, Mr. Patel. How are you feeling today?"},
+    {"role": "patient", "text": "Doctor, I’ve been having slight chest heaviness and breathlessness when I climb stairs."},
+    {"role": "doctor", "text": "Do you have high blood pressure or diabetes?"},
+    {"role": "patient", "text": "Yes, I have blood pressure for five years. I take Amlodipine 5 mg daily."},
+    {"role": "doctor", "text": "Okay. Any pain radiating to the arm or jaw?"},
+    {"role": "patient", "text": "Sometimes, yes. It lasts for a few minutes and then goes away."},
+    {"role": "doctor", "text": "We should not ignore this. It could be related to your heart. I’ll get an ECG and a blood test done today."},
+    {"role": "doctor", "text": "Meanwhile, take Ecosprin 75 mg once daily and continue your BP medicine."},
+    {"role": "doctor", "text": "Avoid stress, salty food, and check your BP twice a week."},
+    {"role": "patient", "text": "Alright, Doctor. Should I avoid exercise?"},
+    {"role": "doctor", "text": "Yes, till the reports are out. I’ve noted it as 'high BP with chest discomfort – suspected heart strain'."},
+    {"role": "doctor", "text": "We’ll decide next steps after the ECG."},
+    {"role": "patient", "text": "Okay, Doctor. Thank you."}
+]
+
+
+#Kidney Infection (Pyelonephritis)
+
+conversation = [
+    {"role": "doctor", "text": "Good morning. Please tell me what’s wrong."},
+    {"role": "patient", "text": "Doctor, I’ve had fever and pain in my lower back for the last two days. It also burns when I pass urine."},
+    {"role": "doctor", "text": "Do you feel the pain more on one side or both?"},
+    {"role": "patient", "text": "Mostly on the right side."},
+    {"role": "doctor", "text": "Any nausea or vomiting?"},
+    {"role": "patient", "text": "A little nausea, yes."},
+    {"role": "doctor", "text": "Okay, this seems like a kidney infection. We’ll confirm with a urine test and ultrasound."},
+    {"role": "doctor", "text": "I’ll start you on Ciprofloxacin 500 mg twice daily for seven days and ask you to drink a lot of water."},
+    {"role": "doctor", "text": "Take Paracetamol if you get fever, and Cranberry syrup twice a day to ease urination."},
+    {"role": "patient", "text": "Alright, Doctor. Is this serious?"},
+    {"role": "doctor", "text": "Not if treated properly. But don’t miss any doses, or the infection can spread."},
+    {"role": "doctor", "text": "I’ve noted it as 'kidney infection'. Come back after three days with the reports."},
+    {"role": "patient", "text": "Sure, Doctor. Thank you."}
+]

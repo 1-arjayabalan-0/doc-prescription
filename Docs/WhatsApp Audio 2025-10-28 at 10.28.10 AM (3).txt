@@ -1,0 +1,110 @@
+(Transcribed by TurboScribe.ai. Go Unlimited to remove this message.)
+
+(0:00 - 0:46)
+Not the rice method. So what you want to know, the reason why a patient is coming, after examining the patient, then after that you want to make a diagnosis of what's wrong with the patient. It might be a patient with upper respiratory tract infection. 
+
+Then you get grades. Also, the patient needs antibiotics. Antibiotics will be the thing. 
+
+So even the antibiotics that I'm giving, Amoxyl 1-Gram-B, so it picks up all the medication and automatically will generate a script. So I don't have to write down the script also. The script's also generated automatically on the system because it's linked to what is called, there's a company, it's not MEDIS, there's another company that basically has got all our medication online in terms of a script form.
+
+(0:47 - 10:47)
+Generate a script automatically and then patient requires, I can say again, I can say patient requires medical... Yeah, but this one, doctor, so there's a standard medications for these causes. Yeah. But you will deal your own way of identifying these are all the causes and this is the medication you prescribe. 
+
+Yeah. So you will have your own different medications. But we can build that kind of system. 
+
+So I'll build all the common medications that I use in my practice. So this is how it works. So what happens then? So that's a really big exercise what I'm talking about because anyway, it's about, I think what we can do now, focus on... Yeah, focus on this one. 
+
+Yeah. But that one will have, I'll probably give you the one Excel format. Yeah. 
+
+In the Excel format, if the patient is having this, this, this, this, I want these medications or I'll work on the matrix. Yeah. And then when the patient is having this, this, this, this, this, then this is a medication, this is a medication. 
+
+So that's a big exercise which is... But what I told you in the front about the booking systems and generating all that, no one's got that out at the moment. They've got basic stuff. But what I'm giving you is obviously, it's a big part of front desk from a, from a, from overall management of the patient on a daily basis. 
+
+Also, you know, also the same thing, also you need to create a, you know, part of this whole thing why it's also important, besides sending out your patient on database, even if you, if you went on leave, you can send out a thing from Valley Heart saying that Dr. Kamande will be on leave from that date and Dr. Patel will be coming. So what you're also generating in the front, you're creating a database also. It's very, very important because what I can do in time, or we close for Christmas or, you know, or wishing you a happy, Merry Christmas from that day to that day. 
+
+So what we can do also, I can send out a bulk SMSs to also provide information to my patients that are on my network. You know, so besides getting birth dates, you can also use the databases to send out bulk SMSs for one, if there's a doctor, you're on leave, or the practice is closed, or whatever, or now, from this date to this date, it's a mental health week, or it's a, or it's a, for female health, we're offering taximers, whatever. So you can also use it as part of your marketing tool at the same time. 
+
+Yeah, yeah. Because now, remember, you should be creating your own database and that's where our value is sitting. 100%, 100%. 
+
+You know? Yeah, and also, the mainly what I was looking into this system, how the money can be increased. Yeah. Because how much we can tell, Mr. Doctor, Doctor, this, you are losing patients of 100 for a month. 
+
+Because, because they're not booking it. Yeah. They call him to the reception, they say, no appointment, we don't have. 
+
+We, ourselves, in my case, in my case itself, like three, four times, we, we said every single time, no, we don't have, we don't have, we don't have, we probably come on the next day. Yeah. But we were coming here, so it's fine. 
+
+Maybe one or two times, we went to different places to, that is why what I'm saying in our system, the moment when they are booking, when the, when the reception also, when some calls coming in, and first thing what they need to do, that just to capture the details, capture the details, and this is the, this is the patient who called. Maybe you'll provide whomever is calling, capture the details, who called. Yeah, yeah. 
+
+And what they want, capture the details. Then immediately, we know that these many people are calling, but you only accommodated 10 people or 20 people. Then there is five more people, we didn't accommodate. 
+
+That's why in the every day, I can give you how much your, your patient, you did not tell. Yeah, yeah. And also system can tell you. 
+
+And that's what, and if the patient is booking from seeing online, and what you need to do, sometimes what happened, the secretaries, they busy, they lazy, they don't capture it, but encourage the patient, hey, my practice is online, you go and look at all these things, and you book the time, you just put in your details and the date, it will populate what time you can come, and then we can take it. The moment when they put the patient details or fix the patient details, I'll immediately store it, which means this guy is looking for you. Yeah, yeah. 
+
+Then I can tell you, this guy is looking for you. Why did my jury estimates, sorry, we couldn't accommodate this day, whatever, but you know. Yeah, so I can, that's what I'm planning actually. 
+
+The moment when they, you must encourage looking at the online. So the moment when they punch in the details and click the date, I'll save it. Yeah. 
+
+I'll save it, and then I will show, they can click different date. The moment when they click the different date, which means they are looking for to meet you. Yeah, yeah. 
+
+So then I can tell you, these many people are interested, that's what we call it as a lease. Yeah, yeah. There's so many people are there interested to meet you, but they couldn't accommodate because you, they don't have the what, which time they need it, you don't have that slot. 
+
+So I can tell you in a month, like 150 people are really wants to meet you. 150 people wants to meet you, because they couldn't accommodate. Then you know, wait, 150 people, I must get another doctor, junior doctor to work for me. 
+
+Yeah. And that's, that's the information which I wanted to give you. Yeah, that's important. 
+
+Yeah, but also that stuff, you know, putting also in terms of that male team, that's not even aiming now. Yeah, all of these things is very, very important. In fact, you've given a big picture for us. 
+
+Yeah. But you, I'll come back, I'll go and speak to my team. Yeah. 
+
+And I'll face it. Okay, we'll provide you next one month. This is what we're going to add this. 
+
+Also, I'm planning to add doctor's calendar. Right now, we don't have a doctor's calendar. Yeah. 
+
+So that you can book your time. Hey, I'm going on leave on so and so day. Yeah, yeah. 
+
+And that time, I'm not available. So the whole year you can, you can plan your calendar. Yeah, yeah. 
+
+And that is based on the, let's say you're going on an emergency operation. Then the patient's two hours, you're not available. You go and book your two hours on emergency. 
+
+Yeah. Then the two hours, immediately Umar is blocked, booked. And we can send a SMS cancellation request. 
+
+And then they can, hey, we got an emergency, we can't accommodate you for this. And doctors is going to the medical emergency. Can you please rebook a different time? Yeah, yeah. 
+
+So we can send out the cancellation, and they can see it. And then they can rebook for a different time. Yeah. 
+
+So all those kind of things we're going to add. Yeah. No, no, no. 
+
+But that's the thing. You know, the whole thing about this whole exercise is also creating a great personal relationship with your patient and the family. That's what we want. 
+
+You want to create that, you know, you don't want to just be, oh, come, I'll see the doctor, get my medicine, go. So I'm trying to create an extended family. That's what the message is, the burden, which is, thank you for supporting, value health, we appreciate your support. 
+
+You know, so you need to create that personal element, because remember, as we're looking at the fourth industrialist revolution and AI, a lot of time we're going to lose the human element, which we need to try and maintain, especially in medical practice. Yeah, you're right. You know, you want the human element, you know, the interaction. 
+
+Oh, Dr. Gandhi has sent me a birthday, oh, that's special, you know. Yeah. Well, thank you for your service, appreciate your support. 
+
+You know, so you need to maintain that type of... No, you got it right, doctor, definitely, because I also used to tell my clients, the only way, because of the corporate, the digital online, the only way you maintain it without losing to the corporate, you have a personal relationship, the extended family, then they'll say, hey, no, I'll just go to Dr. Kams and sort it. And that's most important. Otherwise, the big, not the doctor, patients, doctors, it's very boring. 
+
+Yeah. So because it's not going to affect the big way business, but especially for the digital, like Uber, the local taxis and all, likewise, the big people, they're getting affected, all the corporate comes in with a platform, digital revolution, then you get a local impact. But in order not to affect you, you create an extended family relationship, then they're not going to go to Uber. 
+
+That's what I'm going to do, that's what my aim of also is, interaction from the, from your system that you're sending, it must be a very personalized thing, because then although I'm not physically, but I'm based on how are we, the wording we use, are we creating that want and understanding. So that's what in that half, that's what needs to come across obviously, the appreciation and support at the same time. Because that's the thing, I think as we're going to with AI and stuff that a lot of that is going to be lost, because it will be very efficient. 
+
+But I think in a medical practice where something very personal stuff to create the human element is very important, we can't do such. We can be efficient, but since I maintain the passion and compassion in the way we respond to our patients. No, 100 percent, I agree with you.
+
+(10:47 - 12:27)
+Actually, I also believe in that. The page is the doctor's words most important, the doctor's words most important, I also believe that. And the relationship with the doctor, because half of the disease is getting healed because of the doctor. 
+
+The way you're comforting the patient, because you get the confidence. The medication is probably 50 percent, but the doctor is 50 percent correct. The words what we say, hey, it's okay, it'll be fine. 
+
+I checked your body, all fine. That makes more comfort. Hey, okay, I went to Dr. Krams, I should be fine. 
+
+That is the 50 percent healing than the actual medication. It's called psychosomatic healing. Yeah, so that's why now that relationship is very keen. 
+
+In fact, my mother is saying like when she'll be affected, once comes and meet the doctor, she'll be fine. Yeah, just reassurance. Exactly, so that's what you're telling is the extended family, that makes a big difference. 
+
+Yeah, so let's work on this, and then you let me know. I mean, I'm happy to support you. If I can, I'm going to run two systems. 
+
+I'll run your system once we set up and start orienting my staff. We'll run your system, but I'm telling you, if you can get this, what you work out, you know, and you will present this to a doctor. I think if we get this, this can be, you know. 
+
+Yeah, there's nothing else in the market based on if you can, whatever you've spoken about. Sorry man, I'm not testing that.
+
+(Transcribed by TurboScribe.ai. Go Unlimited to remove this message.)

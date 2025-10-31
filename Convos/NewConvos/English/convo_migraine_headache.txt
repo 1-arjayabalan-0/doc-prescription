@@ -1,0 +1,21 @@
+conversation = [
+    {"role": "doctor", "text": "Good morning. Please come in."},
+    {"role": "patient", "text": "Good morning, Doctor."},
+    {"role": "doctor", "text": "Can I have your name and age, please?"},
+    {"role": "patient", "text": "I’m Arjun Patel, 35 years old."},
+    {"role": "doctor", "text": "Alright, Mr. Patel. What seems to be the problem?"},
+    {"role": "patient", "text": "I get severe headaches on one side of my head, sometimes with nausea and sensitivity to light."},
+    {"role": "doctor", "text": "How long do these headaches usually last?"},
+    {"role": "patient", "text": "Usually a few hours, sometimes up to a day."},
+    {"role": "doctor", "text": "Do you notice any triggers, like stress, fasting, or lack of sleep?"},
+    {"role": "patient", "text": "Yes, it often happens after long working hours or skipping meals."},
+    {"role": "doctor", "text": "This sounds like a classic migraine."},
+    {"role": "doctor", "text": "I’ll prescribe Naproxen 500 mg at the onset of headache, and Domperidone 10 mg if you feel nausea."},
+    {"role": "doctor", "text": "For prevention, take Flunarizine 10 mg once daily at night for a month."},
+    {"role": "patient", "text": "Will this cure it permanently?"},
+    {"role": "doctor", "text": "Migraine can be managed well, but you need to avoid triggers, stay hydrated, and get proper sleep."},
+    {"role": "patient", "text": "Okay, Doctor. I’ll follow that."},
+    {"role": "doctor", "text": "I’ll note your diagnosis as 'Migraine Headache' and treatment as Naproxen, Domperidone, and Flunarizine."},
+    {"role": "doctor", "text": "Take care, and note down your triggers to help manage it better."}
+]
+a

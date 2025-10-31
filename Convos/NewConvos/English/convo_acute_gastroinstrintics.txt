@@ -1,0 +1,20 @@
+conversation = [
+    {"role": "doctor", "text": "Good afternoon. Please have a seat."},
+    {"role": "patient", "text": "Good afternoon, Doctor."},
+    {"role": "doctor", "text": "Can I have your name and age, please?"},
+    {"role": "patient", "text": "I’m Sneha Sharma, 27 years old."},
+    {"role": "doctor", "text": "Alright, Ms. Sharma. What brings you in today?"},
+    {"role": "patient", "text": "I’ve been having loose motions and stomach cramps since last night."},
+    {"role": "doctor", "text": "How many times have you had loose stools today?"},
+    {"role": "patient", "text": "About five times since morning."},
+    {"role": "doctor", "text": "Do you have any vomiting, fever, or blood in stools?"},
+    {"role": "patient", "text": "No vomiting or blood, but slight fever."},
+    {"role": "doctor", "text": "Alright. This seems like acute gastroenteritis, probably due to contaminated food or water."},
+    {"role": "doctor", "text": "I’ll prescribe Ofloxacin 200 mg twice daily for three days, and ORS solution to prevent dehydration."},
+    {"role": "doctor", "text": "Also take Drotaverine 80 mg tablet whenever you have stomach cramps."},
+    {"role": "patient", "text": "Can I eat normally?"},
+    {"role": "doctor", "text": "Eat light food — khichdi, curd, or bananas. Avoid spicy or oily food until you recover."},
+    {"role": "patient", "text": "Okay, Doctor. Thank you."},
+    {"role": "doctor", "text": "I’ll note your diagnosis as 'Acute Gastroenteritis' and treatment as Ofloxacin, ORS, and Drotaverine."},
+    {"role": "doctor", "text": "Drink plenty of fluids and get rest. Come back if symptoms persist beyond two days."}
+]

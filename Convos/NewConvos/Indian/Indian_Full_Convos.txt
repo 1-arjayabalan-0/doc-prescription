@@ -1,0 +1,95 @@
+#Normal Infection/ Disease
+
+#Stomach Infection (Loose Motions & Cramps)
+
+conversation = [
+    {"role": "doctor", "text": "Good morning, I’m Dr. Neha Mehta. Please come in, what seems to be the problem today?"},
+    {"role": "patient", "text": "Good morning, Doctor. I’ve been having loose motions and stomach pain since last night."},
+    {"role": "doctor", "text": "How many times have you gone to the washroom today?"},
+    {"role": "patient", "text": "Around five to six times, Doctor."},
+    {"role": "doctor", "text": "Any vomiting or fever?"},
+    {"role": "patient", "text": "Just a little fever, no vomiting."},
+    {"role": "doctor", "text": "Hmm, looks like a stomach infection, probably from something you ate outside."},
+    {"role": "doctor", "text": "I’ll give you Oflox 200 mg twice a day for three days, and an ORS solution to keep you hydrated."},
+    {"role": "doctor", "text": "You can also take Drotin tablet if the cramps get too bad."},
+    {"role": "patient", "text": "Can I eat normal food, Doctor?"},
+    {"role": "doctor", "text": "Avoid spicy or oily food. Eat curd rice or khichdi, and drink plenty of water."},
+    {"role": "patient", "text": "Okay, Doctor. Thank you."},
+    {"role": "doctor", "text": "Alright, Ravi, take rest for a day or two and you’ll be fine."}
+]
+
+
+
+
+#Severe Headache (Migraine-like)
+conversation = [
+    {"role": "doctor", "text": "Hello, I’m Dr. Rakesh Menon. What brings you here today?"},
+    {"role": "patient", "text": "Hello, Doctor. I’ve been getting strong headaches, usually on one side, with vomiting sometimes."},
+    {"role": "doctor", "text": "How often do you get these headaches?"},
+    {"role": "patient", "text": "Almost every week, especially when I skip meals or work too long."},
+    {"role": "doctor", "text": "Do you feel sensitive to light or sound during the pain?"},
+    {"role": "patient", "text": "Yes, I prefer sitting in a dark room when it happens."},
+    {"role": "doctor", "text": "That sounds like migraine headaches."},
+    {"role": "doctor", "text": "Take Naproxen 500 mg when the pain starts, and Domperidone if you feel like vomiting."},
+    {"role": "doctor", "text": "Also, I’ll start you on Flunarizine 10 mg once daily at night to reduce the frequency."},
+    {"role": "patient", "text": "Will this completely stop the headaches?"},
+    {"role": "doctor", "text": "It should reduce them significantly. Try not to skip meals, drink enough water, and get proper sleep."},
+    {"role": "patient", "text": "Okay, Doctor. I’ll follow that."},
+    {"role": "doctor", "text": "Good, Pooja. I’ve noted it as migraine. Take care and come back if it continues."}
+]
+
+
+#Dust Allergy (Sneezing & Blocked Nose)
+conversation = [
+    {"role": "doctor", "text": "Hi, I’m Dr. Anjali Patel. What seems to be the issue today?"},
+    {"role": "patient", "text": "Doctor, I’ve been sneezing a lot, especially in the morning. My nose gets blocked and my eyes itch."},
+    {"role": "doctor", "text": "Since how long have you been facing this problem?"},
+    {"role": "patient", "text": "Almost two weeks now."},
+    {"role": "doctor", "text": "Any fever or sore throat?"},
+    {"role": "patient", "text": "No, just sneezing and a runny nose."},
+    {"role": "doctor", "text": "Looks like you have a dust or seasonal allergy."},
+    {"role": "doctor", "text": "I’ll give you Levocetirizine 5 mg at night and Montair 10 mg once daily for two weeks."},
+    {"role": "doctor", "text": "Also use Flomist nasal spray — one puff in each nostril morning and night."},
+    {"role": "patient", "text": "Do I need to avoid anything, Doctor?"},
+    {"role": "doctor", "text": "Yes, avoid dust, keep windows closed early in the morning, and use a mask while cleaning."},
+    {"role": "patient", "text": "Alright, Doctor. Thank you."},
+    {"role": "doctor", "text": "Take medicines regularly, Karan. If it continues, come back for a follow-up."}
+]
+
+
+
+#High Blood Sugar (Diabetes Follow-Up)
+conversation = [
+    {"role": "doctor", "text": "Good morning, I’m Dr. Sameer Deshpande. How are you doing, Mr. Singh? Age 60"},
+    {"role": "patient", "text": "Good morning, Doctor. I’m fine but feeling weak these days."},
+    {"role": "doctor", "text": "Are you taking your diabetes tablets regularly?"},
+    {"role": "patient", "text": "Yes, I take Metformin twice a day as you told me earlier."},
+    {"role": "doctor", "text": "When did you last check your sugar levels?"},
+    {"role": "patient", "text": "Yesterday. It was 165 fasting and 250 after lunch."},
+    {"role": "doctor", "text": "That’s a bit high. We’ll need to add another tablet to control it better."},
+    {"role": "doctor", "text": "I’ll add Glimepiride 1 mg once daily before breakfast, along with your current medicine."},
+    {"role": "doctor", "text": "Avoid sweets, rice, and fried foods. Walk at least 30 minutes daily."},
+    {"role": "patient", "text": "Okay, Doctor. Should I check sugar every day?"},
+    {"role": "doctor", "text": "No, twice a week is fine. If you feel dizzy or sweaty, eat something immediately."},
+    {"role": "doctor", "text": "I’ve noted it as a high blood sugar follow-up. Come after two weeks with your readings."},
+    {"role": "patient", "text": "Sure, Doctor. Thank you."}
+]
+
+
+#Chest Cold (Bronchitis / Cough with Phlegm)
+conversation = [
+    {"role": "doctor", "text": "Good evening, I’m Dr. Arvind Rao. What’s the problem today?"},
+    {"role": "patient", "text": "Good evening, Doctor. I’ve been coughing badly for the last week, with yellow phlegm."},
+    {"role": "doctor", "text": "Any fever or chest pain?"},
+    {"role": "patient", "text": "Slight fever and chest feels heavy when I cough."},
+    {"role": "doctor", "text": "Do you smoke or have any breathing issues usually?"},
+    {"role": "patient", "text": "No, I don’t smoke. It started after I caught a cold."},
+    {"role": "doctor", "text": "Looks like a chest infection or bronchitis."},
+    {"role": "doctor", "text": "I’ll give you Augmentin 625 mg twice a day for five days and Ambroxol syrup three times a day."},
+    {"role": "doctor", "text": "Also do steam inhalation twice daily to clear the mucus."},
+    {"role": "patient", "text": "Should I take leave from work, Doctor?"},
+    {"role": "doctor", "text": "Yes, take rest for two days and drink warm water frequently."},
+    {"role": "doctor", "text": "Follow these medicines, Sneha, and you’ll recover soon."},
+    {"role": "patient", "text": "Thank you, Doctor."},
+    {"role": "doctor", "text": "You’re welcome. Come back if the fever doesn’t settle in three days."}
+]

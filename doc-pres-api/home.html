@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Medical Audio Transcription</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1d88ea",
+              "medical-blue": "#1d88ea",
+              "background-light": "#f8f9fa",
+              "background-dark": "#101922",
+              "doctor-blue": "#dbeafe",
+              "doctor-blue-dark": "#1e3a8a",
+              "patient-gray": "#f3f4f6",
+              "patient-gray-dark": "#374151",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .waveform {
+        display: flex;
+        align-items: center;
+        height: 48px;
+        gap: 3px;
+      }
+      .waveform .bar {
+        width: 4px;
+        background-color: #1d88ea;
+        border-radius: 999px;
+        animation: wave 1.5s ease-in-out infinite;
+      }
+      @keyframes wave {
+        0%,
+        100% {
+          transform: scaleY(0.2);
+        }
+        50% {
+          transform: scaleY(1);
+        }
+      }
+      .sidebar {
+        transition: width 0.3s ease-in-out, padding 0.3s ease-in-out,
+          transform 0.3s ease-in-out;
+        will-change: width;
+      }
+      .sidebar-open {
+        width: 384px;
+      }
+      .sidebar-closed {
+        width: 0px;
+        padding-left: 0;
+        padding-right: 0;
+        overflow: hidden;
+      }
+      .main-content-expanded {
+        width: 100%;
+      }
+      
+      /* Additional styles to maintain existing functionality */
+      .hidden {
+        display: none;
+      }
+      
+      input[type="file"] {
+        display: none;
+      }
+      
+      .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #1d88ea;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+      
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      
+      .alert {
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        font-weight: 500;
+      }
+      
+      .alert-error {
+        background: #fee2e2;
+        color: #dc2626;
+        border: 2px solid #fca5a5;
+      }
+      
+      .alert-success {
+        background: #d1fae5;
+        color: #065f46;
+        border: 2px solid #6ee7b7;
+      }
+      
+      /* Print Styles */
+      @media print {
+        body {
+          background: white;
+        }
+        
+        header,
+        .sidebar,
+        button:not(.print-button) {
+          display: none;
+        }
+        
+        #result-section {
+          display: block !important;
+        }
+        
+        .main-content {
+          padding: 0;
+          margin: 0;
+        }
+        
+        .prescription-card {
+          border: none;
+          box-shadow: none;
+        }
+      }
+      
+      /* Responsive styles for different screen sizes */
+      @media (max-width: 768px) {
+        .sidebar-open {
+          width: 100%;
+          position: fixed;
+          z-index: 50;
+        }
+        
+        #sidebar-toggle {
+          z-index: 60;
+        }
+      }
+      
+      @media (max-width: 640px) {
+        .flex-col-sm {
+          flex-direction: column;
+        }
+        
+        .w-full-sm {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200"
+  >
+    <div class="relative flex h-auto min-h-screen w-full flex-col">
+      <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-700 px-4 sm:px-8 py-3 bg-white dark:bg-slate-900/50 sticky top-0 z-20"
+      >
+        <div class="flex items-center gap-3 text-slate-900 dark:text-slate-50">
+          <div class="text-medical-blue size-7">
+            <svg
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.9999 1.5C14.735 1.5 17.2917 2.45952 19.242 4.16112L19.2421 4.16119C19.3039 4.2154 19.3567 4.27663 19.403 4.34148L19.4032 4.34175C21.4344 6.2736 22.4999 8.87532 22.4999 11.625C22.4999 17.585 17.7791 22.5 11.9999 22.5C6.22072 22.5 1.49994 17.585 1.49994 11.625C1.49994 8.87532 2.56549 6.2736 4.59669 4.34175L4.59688 4.34148C4.64315 4.27663 4.69596 4.2154 4.75775 4.16119L4.75788 4.16112C6.70817 2.45952 9.26484 1.5 11.9999 1.5ZM10.4999 15.75V12.75H7.49994C7.08573 12.75 6.74994 12.4142 6.74994 12C6.74994 11.5858 7.08573 11.25 7.49994 11.25H10.4999V8.25C10.4999 7.83579 10.8357 7.5 11.2499 7.5H12.7499C13.1641 7.5 13.4999 7.83579 13.4999 8.25V11.25H16.5C16.9142 11.25 17.25 11.5858 17.25 12C17.25 12.4142 16.9142 12.75 16.5 12.75H13.4999V15.75C13.4999 16.1642 13.1641 16.5 12.7499 16.5H11.2499C10.8357 16.5 10.4999 16.1642 10.4999 15.75Z"
+              ></path>
+            </svg>
+          </div>
+          <h1 class="text-xl font-bold tracking-tight">Medical Audio Transcription</h1>
+        </div>
+        <button
+          class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200"
+        >
+          <span class="material-symbols-outlined text-2xl">person</span>
+        </button>
+      </header>
+      <div class="flex flex-1">
+        <aside
+          class="sidebar sidebar-open flex-shrink-0 flex flex-col bg-white dark:bg-slate-900/50 border-r border-slate-200 dark:border-slate-800 relative h-[calc(100vh-65px)] sticky top-[65px]"
+          id="sidebar"
+        >
+          <div
+            class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center whitespace-nowrap"
+          >
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white">
+              Conversation Transcript
+            </h2>
+          </div>
+          <div class="flex-1 overflow-y-auto p-4">
+            <div class="flex flex-col gap-4">
+              <div class="flex justify-start">
+                <div class="flex flex-col items-start gap-1 max-w-[85%]">
+                  <div
+                    class="bg-patient-gray dark:bg-patient-gray-dark text-slate-800 dark:text-slate-200 p-3 rounded-xl rounded-tl-sm"
+                  >
+                    Good morning, Doctor. I've been having this persistent
+                    headache for the past three days. It's a dull ache right
+                    behind my eyes.
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end">
+                <div class="flex flex-col items-end gap-1 max-w-[85%]">
+                  <div
+                    class="bg-doctor-blue dark:bg-doctor-blue-dark text-slate-800 dark:text-slate-100 p-3 rounded-xl rounded-tr-sm"
+                  >
+                    I see. Good morning. Besides the headache, have you
+                    experienced any other symptoms? Fever, nausea, or
+                    sensitivity to light?
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-start">
+                <div class="flex flex-col items-start gap-1 max-w-[85%]">
+                  <div
+                    class="bg-patient-gray dark:bg-patient-gray-dark text-slate-800 dark:text-slate-200 p-3 rounded-xl rounded-tl-sm"
+                  >
+                    A little bit of sensitivity to light, yes. No fever, and
+                    only mild nausea yesterday morning.
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end">
+                <div class="flex flex-col items-end gap-1 max-w-[85%]">
+                  <div
+                    class="bg-doctor-blue dark:bg-doctor-blue-dark text-slate-800 dark:text-slate-100 p-3 rounded-xl rounded-tr-sm"
+                  >
+                    Okay, it sounds like you might be experiencing a tension
+                    headache, possibly bordering on a mild migraine. I'll
+                    prescribe something for the pain and nausea.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <main
+          class="flex-1 flex flex-col gap-8 p-4 sm:p-6 lg:p-8 relative transition-all duration-300 ease-in-out"
+          id="main-content"
+        >
+          <button
+            class="absolute top-1/2 -translate-y-1/2 -left-4 z-10 w-8 h-8 flex items-center justify-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full shadow-md hover:bg-slate-50 dark:hover:bg-slate-700 text-medical-blue"
+            id="sidebar-toggle"
+          >
+            <span
+              class="material-symbols-outlined transition-transform duration-300 ease-in-out"
+              id="toggle-icon"
+              >chevron_left</span
+            >
+          </button>
+          <div
+            class="flex flex-col gap-6 p-6 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"
+          >
+            <div
+              class="flex flex-col sm:flex-row flex-wrap justify-between items-center gap-4"
+            >
+              <div class="flex-1 min-w-72">
+                <h2 class="text-slate-900 dark:text-white text-xl font-bold">
+                  Start Consultation
+                </h2>
+                <p
+                  class="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal pt-1"
+                >
+                  Record or upload the patient conversation audio.
+                </p>
+              </div>
+              <div class="flex w-full sm:w-auto gap-3 flex-wrap justify-start">
+                <button
+                  class="flex flex-1 sm:flex-none min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-5 bg-medical-blue text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-medical-blue/90 transition-colors"
+                  id="startRecordBtn"
+                >
+                  <span>🎙️</span>
+                  <span class="truncate">Record Conversation</span>
+                </button>
+                <button
+                  class="flex flex-1 sm:flex-none min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-5 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                  onclick="document.getElementById('fileInput').click()"
+                >
+                  <span>📁</span>
+                  <span class="truncate">Upload Audio</span>
+                </button>
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept="audio/*,.mp3,.wav,.m4a,.ogg,.flac,.webm"
+                />
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 pt-2">
+              <div class="flex items-center gap-4">
+                <div class="waveform hidden" id="waveformAnimation">
+                  <div
+                    class="bar"
+                    style="height: 60%; animation-delay: 0.1s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 100%; animation-delay: 0.2s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 40%; animation-delay: 0.3s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 80%; animation-delay: 0.4s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 50%; animation-delay: 0.5s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 90%; animation-delay: 0.6s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 30%; animation-delay: 0.7s;"
+                  ></div>
+                </div>
+                <p
+                  class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal hidden"
+                  id="recordingStatus"
+                >
+                  Recording... <span id="recordingTime">00:00</span>
+                </p>
+                <button class="btn-danger hidden" id="stopRecordBtn">
+                  Stop Recording
+                </button>
+              </div>
+              <div id="audioPreview" class="hidden mt-4">
+                <div class="flex justify-between items-center mb-2">
+                  <h3 class="text-slate-900 dark:text-white font-medium">Audio Preview:</h3>
+                  <button 
+                    class="flex items-center justify-center gap-1 px-3 py-1 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                    id="clearBtn"
+                  >
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                    <span>Clear</span>
+                  </button>
+                </div>
+                <audio id="audioPlayer" class="w-full" controls></audio>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <button
+              class="flex min-w-[84px] max-w-[480px] w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-8 bg-medical-blue text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-medical-blue/90 transition-colors disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed"
+              id="processBtn"
+              disabled
+            >
+              <span class="material-symbols-outlined">auto_awesome</span>
+              <span class="truncate">Generate Prescription</span>
+            </button>
+          </div>
+          
+          <!-- Process Section -->
+          <div class="process-section text-center">
+            <div id="loader" class="hidden">
+              <div class="loader"></div>
+              <p class="text-medical-blue font-semibold mt-3">
+                Processing audio... This may take a minute
+              </p>
+            </div>
+          </div>
+          
+          <!-- Error and Success Alerts -->
+          <div id="errorAlert" class="alert alert-error hidden"></div>
+          <div id="successAlert" class="alert alert-success hidden"></div>
+          
+          <!-- Message Info Box (when no audio) -->
+           <div 
+             class="flex flex-col items-center justify-center p-8 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 text-center"
+             id="message_info"
+           >
+             <span class="material-symbols-outlined text-4xl mb-3">mic</span>
+             <p class="text-lg font-medium">Kindly Start Recording or Upload a Conversation Audio</p>
+             <p>to Generate a Prescription</p>
+           </div>
+           
+           <!-- Prescription Result Section -->
+           <div id="result-section" class="hidden">
+             <div class="flex justify-between items-center mb-4">
+               <h2 class="text-slate-900 dark:text-white text-xl font-bold">Prescription</h2>
+               <div class="flex gap-2">
+                 <button 
+                   class="flex items-center justify-center gap-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors print-button"
+                   onclick="window.print()"
+                 >
+                   <span class="material-symbols-outlined">print</span>
+                   <span>Print</span>
+                 </button>
+               </div>
+             </div>
+             
+             <div class="bg-white dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-600 rounded-lg overflow-hidden">
+               <!-- Prescription Header -->
+               <div class="bg-slate-900 dark:bg-slate-700 text-white p-4 text-center">
+                 <h2 class="text-xl font-bold tracking-wide">MEDICAL PRESCRIPTION</h2>
+               </div>
+               
+               <!-- Doctor & Patient Info -->
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border-b border-slate-300 dark:border-slate-600">
+                 <div class="p-5 border-r border-slate-300 dark:border-slate-600">
+                   <h3 class="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider border-b-2 border-slate-900 dark:border-slate-500 pb-2 mb-3">Doctor Information</h3>
+                   <div class="space-y-2">
+                     <p class="text-slate-800 dark:text-slate-200"><strong class="inline-block w-32">Name:</strong> <span id="doctor-name">Dr. Sarah Johnson</span></p>
+                     <p class="text-slate-800 dark:text-slate-200"><strong class="inline-block w-32">Specialty:</strong> <span id="doctor-specialty">General Medicine</span></p>
+                     <p class="text-slate-800 dark:text-slate-200"><strong class="inline-block w-32">License No:</strong> <span id="doctor-license">MD12345678</span></p>
+                   </div>
+                 </div>
+                 <div class="p-5">
+                   <h3 class="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider border-b-2 border-slate-900 dark:border-slate-500 pb-2 mb-3">Patient Information</h3>
+                   <div class="space-y-2">
+                     <p class="text-slate-800 dark:text-slate-200"><strong class="inline-block w-32">Name:</strong> <span id="patient-name">John Smith</span></p>
+                     <p class="text-slate-800 dark:text-slate-200"><strong class="inline-block w-32">Age:</strong> <span id="patient-age">45 years</span></p>
+                     <p class="text-slate-800 dark:text-slate-200"><strong class="inline-block w-32">Date:</strong> <span id="prescription-date">May 15, 2023</span></p>
+                   </div>
+                 </div>
+               </div>
+               
+               <!-- Diagnosis -->
+               <div class="p-5 border-b border-slate-300 dark:border-slate-600">
+                 <h3 class="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider border-b-2 border-slate-900 dark:border-slate-500 pb-2 mb-3">Diagnosis</h3>
+                 <p class="text-slate-800 dark:text-slate-200" id="diagnosis">Tension headache with mild migraine symptoms</p>
+               </div>
+               
+               <!-- Medications -->
+               <div class="p-5 border-b border-slate-300 dark:border-slate-600">
+                 <h3 class="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider border-b-2 border-slate-900 dark:border-slate-500 pb-2 mb-3">
+                   <span class="text-lg mr-2">℞</span> Medications
+                 </h3>
+                 <div id="medications-list" class="space-y-4">
+                   <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-300 dark:border-slate-600 border-l-4 border-l-slate-900 dark:border-l-slate-500">
+                     <div class="font-bold text-slate-900 dark:text-white mb-2">Ibuprofen 400mg</div>
+                     <p class="text-slate-700 dark:text-slate-300">Take 1 tablet every 6 hours as needed for pain. Take with food.</p>
+                     <p class="text-slate-700 dark:text-slate-300 mt-1"><strong>Quantity:</strong> 20 tablets</p>
+                   </div>
+                   <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-300 dark:border-slate-600 border-l-4 border-l-slate-900 dark:border-l-slate-500">
+                     <div class="font-bold text-slate-900 dark:text-white mb-2">Sumatriptan 50mg</div>
+                     <p class="text-slate-700 dark:text-slate-300">Take 1 tablet at onset of migraine. May repeat after 2 hours if needed. Do not exceed 200mg in 24 hours.</p>
+                     <p class="text-slate-700 dark:text-slate-300 mt-1"><strong>Quantity:</strong> 9 tablets</p>
+                   </div>
+                 </div>
+               </div>
+               
+               <!-- Follow-up -->
+               <div class="p-5">
+                 <h3 class="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider border-b-2 border-slate-900 dark:border-slate-500 pb-2 mb-3">Follow-up Instructions</h3>
+                 <p class="text-slate-800 dark:text-slate-200" id="follow-up">Return in 2 weeks if symptoms persist. Maintain a headache diary to track frequency and triggers.</p>
+                 
+                 <div class="mt-8 pt-8 border-t border-dashed border-slate-300 dark:border-slate-600 text-center">
+                   <p class="text-slate-900 dark:text-white font-bold">Dr. Sarah Johnson</p>
+                   <p class="text-slate-600 dark:text-slate-400 text-sm">Signature</p>
+                 </div>
+                 <div class="mt-4 flex justify-end">
+                    <button id="print-btn" class="bg-slate-800 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-slate-700 transition-colors">
+                      <span class="material-symbols-outlined">print</span>
+                      Print Prescription
+                    </button>
+                  </div>
+               </div>
+             </div>
+           </div>
+           
+           <!-- Process Section -->
+            <div id="loader" class="hidden">
+              <div class="loader"></div>
+              <p style="color: #667eea; font-weight: 600; margin-top: 10px;">
+                Processing audio... This may take a minute
+              </p>
+            </div>
+          </div>
+
+          <!-- Error Display -->
+          <div id="errorAlert" class="alert alert-error hidden"></div>
+
+          <!-- Success Display -->
+          <div id="successAlert" class="alert alert-success hidden"></div>
+
+          <!-- Results Section -->
+          <div id="resultSection" class="result-section hidden">
+            <h2 style="color: #667eea; margin-bottom: 20px;">
+              📋 Medical Analysis Results
+            </h2>
+
+            <div class="result-grid">
+              <!-- Patient Info -->
+              <div class="result-card">
+                <h3>👤 Patient Information</h3>
+                <p><strong>Name:</strong> <span id="patientName"></span></p>
+                <p><strong>Age:</strong> <span id="patientAge"></span></p>
+                <p><strong>Gender:</strong> <span id="patientGender"></span></p>
+                <p>
+                  <strong>Contact:</strong> <span id="patientContact"></span>
+                </p>
+              </div>
+
+              <!-- Vital Signs -->
+              <div class="result-card">
+                <h3>🩺 Vital Signs</h3>
+                <p><strong>BP:</strong> <span id="vitalBP"></span></p>
+                <p><strong>Temp:</strong> <span id="vitalTemp"></span></p>
+                <p><strong>Heart Rate:</strong> <span id="vitalHR"></span></p>
+                <p><strong>Weight:</strong> <span id="vitalWeight"></span></p>
+              </div>
+
+              <!-- Chief Complaint & Diagnosis -->
+              <div class="result-card full-width">
+                <h3>🔍 Diagnosis</h3>
+                <p>
+                  <strong>Chief Complaint:</strong>
+                  <span id="chiefComplaint"></span>
+                </p>
+                <p><strong>Diagnosis:</strong> <span id="diagnosis"></span></p>
+              </div>
+
+              <!-- Symptoms -->
+              <div class="result-card">
+                <h3>⚕️ Symptoms</h3>
+                <ul id="symptomsList"></ul>
+              </div>
+
+              <!-- Medications -->
+              <div class="result-card">
+                <h3>💊 Medications</h3>
+                <div id="medicationsList"></div>
+              </div>
+
+              <!-- Medical History -->
+              <div class="result-card">
+                <h3>📜 Medical History</h3>
+                <ul id="historyList"></ul>
+              </div>
+
+              <!-- Allergies -->
+              <div class="result-card">
+                <h3>⚠️ Allergies</h3>
+                <ul id="allergiesList"></ul>
+              </div>
+
+              <!-- Lifestyle Advice -->
+              <div class="result-card full-width">
+                <h3>🏃 Lifestyle Advice</h3>
+                <ul id="adviceList"></ul>
+              </div>
+
+              <!-- Follow Up -->
+              <div class="result-card full-width">
+                <h3>📅 Follow Up</h3>
+                <p id="followUp"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "http://localhost:8000/api/process";
+
+      // DOM Elements
+      const startRecordBtn = document.getElementById("startRecordBtn");
+      const stopRecordBtn = document.getElementById("stopRecordBtn");
+      const fileInput = document.getElementById("fileInput");
+      const audioPlayer = document.getElementById("audioPlayer");
+      const audioPreview = document.getElementById("audioPreview");
+      const clearBtn = document.getElementById("clearBtn");
+      const processBtn = document.getElementById("processBtn");
+      const loader = document.getElementById("loader");
+      const errorAlert = document.getElementById("errorAlert");
+      const successAlert = document.getElementById("successAlert");
+      const messageInfo = document.getElementById("message_info");
+      const resultSection = document.getElementById("result-section");
+      const waveformAnimation = document.getElementById("waveformAnimation");
+      const recordingStatus = document.getElementById("recordingStatus");
+      const recordingTime = document.getElementById("recordingTime");
+      const sidebarToggle = document.getElementById("sidebar-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const mainContent = document.getElementById("main-content");
+      const toggleIcon = document.getElementById("toggle-icon");
+
+      // Variables
+      let mediaRecorder;
+      let audioChunks = [];
+      let audioBlob;
+      let recordingInterval;
+      let seconds = 0;
+      let minutes = 0;
+      let isSidebarOpen = true;
+
+
+      // Toggle sidebar
+      sidebarToggle.addEventListener("click", () => {
+        if (isSidebarOpen) {
+          sidebar.classList.remove("sidebar-open");
+          sidebar.classList.add("sidebar-closed");
+          mainContent.classList.add("main-content-expanded");
+          toggleIcon.style.transform = "rotate(180deg)";
+        } else {
+          sidebar.classList.remove("sidebar-closed");
+          sidebar.classList.add("sidebar-open");
+          mainContent.classList.remove("main-content-expanded");
+          toggleIcon.style.transform = "rotate(0deg)";
+        }
+        isSidebarOpen = !isSidebarOpen;
+      });
+
+      // Start Recording
+      startRecordBtn.addEventListener("click", async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+
+          mediaRecorder.addEventListener("dataavailable", (event) => {
+            audioChunks.push(event.data);
+          });
+
+          mediaRecorder.addEventListener("stop", () => {
+            audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            audioPlayer.src = audioUrl;
+            audioPreview.classList.remove("hidden");
+            processBtn.disabled = false;
+            messageInfo.classList.add("hidden");
+          });
+
+          mediaRecorder.start();
+          startRecordBtn.classList.add("hidden");
+          stopRecordBtn.classList.remove("hidden");
+          waveformAnimation.classList.remove("hidden");
+          recordingStatus.classList.remove("hidden");
+          
+          // Start timer
+          seconds = 0;
+          minutes = 0;
+          clearInterval(recordingInterval);
+          recordingInterval = setInterval(updateRecordingTime, 1000);
+        } catch (error) {
+          console.error("Error accessing microphone:", error);
+          showError("Could not access microphone. Please ensure you have granted permission.");
+        }
+      });
+
+      // Stop Recording
+      stopRecordBtn.addEventListener("click", () => {
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+          mediaRecorder.stream.getTracks().forEach(track => track.stop());
+          clearInterval(recordingInterval);
+          startRecordBtn.classList.remove("hidden");
+          stopRecordBtn.classList.add("hidden");
+          waveformAnimation.classList.add("hidden");
+          recordingStatus.classList.add("hidden");
+        }
+      });
+
+      // Update recording time
+      function updateRecordingTime() {
+        seconds++;
+        if (seconds >= 60) {
+          seconds = 0;
+          minutes++;
+        }
+        recordingTime.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      }
+
+      // File Upload
+      fileInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const audioUrl = URL.createObjectURL(file);
+          audioPlayer.src = audioUrl;
+          audioPreview.classList.remove("hidden");
+          processBtn.disabled = false;
+          messageInfo.classList.add("hidden");
+          audioBlob = file;
+        }
+      });
+
+      // Clear Audio
+      clearBtn.addEventListener("click", () => {
+        audioPlayer.src = "";
+        audioPreview.classList.add("hidden");
+        processBtn.disabled = true;
+        fileInput.value = "";
+        messageInfo.classList.remove("hidden");
+        resultSection.classList.add("hidden");
+      });
+
+      // Process Audio
+      processBtn.addEventListener("click", async () => {
+        if (!audioBlob) {
+          showError("No audio file selected or recorded.");
+          return;
+        }
+
+        try {
+          // Show loader
+          loader.classList.remove("hidden");
+          processBtn.disabled = true;
+          hideAlerts();
+
+          // Create form data
+          const formData = new FormData();
+          formData.append("audio", audioBlob);
+
+          // Send to server
+          const response = await fetch(API_URL, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          
+          // Hide loader
+          loader.classList.add("hidden");
+          
+          // Show success
+          showSuccess("Prescription generated successfully!");
+          
+          // Update prescription data
+          updatePrescriptionData(data);
+          
+          // Show result section
+          resultSection.classList.remove("hidden");
+          messageInfo.classList.add("hidden");
+          
+        } catch (error) {
+          console.error("Error processing audio:", error);
+          loader.classList.add("hidden");
+          processBtn.disabled = false;
+          showError("Error processing audio. Please try again.");
+        }
+      });
+
+      // Update prescription data
+      function updatePrescriptionData(data) {
+        // Update doctor info
+        document.getElementById("doctor-name").textContent = data.doctor?.name || "Dr. Sarah Johnson";
+        document.getElementById("doctor-specialty").textContent = data.doctor?.specialty || "General Medicine";
+        document.getElementById("doctor-license").textContent = data.doctor?.license || "MD12345678";
+        
+        // Update patient info
+        document.getElementById("patient-name").textContent = data.patient?.name || "John Smith";
+        document.getElementById("patient-age").textContent = data.patient?.age || "45 years";
+        document.getElementById("prescription-date").textContent = data.date || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        
+        // Update diagnosis
+        document.getElementById("diagnosis").textContent = data.diagnosis || "Tension headache with mild migraine symptoms";
+        
+        // Update medications
+        const medicationsList = document.getElementById("medications-list");
+        medicationsList.innerHTML = "";
+        
+        if (data.medications && data.medications.length > 0) {
+          data.medications.forEach(med => {
+            const medItem = document.createElement("div");
+            medItem.className = "bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-300 dark:border-slate-600 border-l-4 border-l-slate-900 dark:border-l-slate-500";
+            
+            const medName = document.createElement("div");
+            medName.className = "font-bold text-slate-900 dark:text-white mb-2";
+            medName.textContent = med.name;
+            
+            const medInstructions = document.createElement("p");
+            medInstructions.className = "text-slate-700 dark:text-slate-300";
+            medInstructions.textContent = med.instructions;
+            
+            const medQuantity = document.createElement("p");
+            medQuantity.className = "text-slate-700 dark:text-slate-300 mt-1";
+            medQuantity.innerHTML = `<strong>Quantity:</strong> ${med.quantity}`;
+            
+            medItem.appendChild(medName);
+            medItem.appendChild(medInstructions);
+            medItem.appendChild(medQuantity);
+            
+            medicationsList.appendChild(medItem);
+          });
+        } else {
+          // Default medications if none provided
+          medicationsList.innerHTML = `
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-4 border border-slate-300 dark:border-slate-600 border-l-4 border-l-slate-900 dark:border-l-slate-500">
+              <div class="font-bold text-slate-900 dark:text-white mb-2">Ibuprofen 400mg</div>
+              <p class="text-slate-700 dark:text-slate-300">Take 1 tablet every 6 hours as needed for pain. Take with food.</p>
+              <p class="text-slate-700 dark:text-slate-300 mt-1"><strong>Quantity:</strong> 20 tablets</p>
+            </div>
+          `;
+        }
+        
+        // Update follow-up
+        document.getElementById("follow-up").textContent = data.followUp || "Return in 2 weeks if symptoms persist. Maintain a headache diary to track frequency and triggers.";
+      }
+
+      // Show error message
+      function showError(message) {
+        errorAlert.textContent = message;
+        errorAlert.classList.remove("hidden");
+        successAlert.classList.add("hidden");
+        setTimeout(() => {
+          errorAlert.classList.add("hidden");
+        }, 5000);
+      }
+
+      // Show success message
+      function showSuccess(message) {
+        successAlert.textContent = message;
+        successAlert.classList.remove("hidden");
+        errorAlert.classList.add("hidden");
+        setTimeout(() => {
+          successAlert.classList.add("hidden");
+        }, 5000);
+      }
+
+      // Hide alerts
+       function hideAlerts() {
+         errorAlert.classList.add("hidden");
+         successAlert.classList.add("hidden");
+       }
+
+       // Print functionality
+       document.getElementById("print-btn").addEventListener("click", function() {
+         window.print();
+       });
+     </script>
+  </body>
+</html>

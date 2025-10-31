@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse
 import whisper
 import torch
 import ollama
@@ -20,33 +20,11 @@ from concurrent.futures import ThreadPoolExecutor
 from pydantic_settings import BaseSettings
 from datetime import datetime
 import uuid
-import subprocess
-import shutil
-from dotenv import load_dotenv
-from gtts import gTTS
-from pydub import AudioSegment
-from pathlib import Path
-
-load_dotenv() 
-
-os.makedirs("logs", exist_ok=True)
-log_filename = f"logs/medical_processor_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
-
-whisper_model_env = os.getenv("WHISPER_MODEL")
-medical_model_env = os.getenv("MEDICAL_MODEL")
-max_file_size_env = os.getenv("MAX_FILE_SIZE")
-api_key_env = os.getenv("API_KEY")
-cross_orgins_env = os.getenv("CORS_ORIGINS")
-enable_rate_limit_env = os.getenv("ENABLE_RATE_LIMITING")
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(log_filename, encoding="utf-8"),
-        logging.StreamHandler()  # keep console output too
-    ]
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
@@ -58,11 +36,11 @@ limiter = Limiter(key_func=get_remote_address)
 
 # Settings
 class Settings(BaseSettings):
-    whisper_model: str = whisper_model_env
-    medical_model: str = medical_model_env
-    max_file_size: int = max_file_size_env
+    whisper_model: str = "base"
+    medical_model: str = "medllama2:7b"
+    max_file_size: int = 50 * 1024 * 1024  # 50MB
     allowed_audio_formats: list = [".mp3", ".wav", ".m4a", ".ogg", ".flac", ".webm"]
-    enable_rate_limiting: bool = enable_rate_limit_env
+    enable_rate_limiting: bool = True
     
     class Config:
         env_file = ".env"
@@ -72,7 +50,7 @@ settings = Settings()
 # Pydantic models for response
 class PatientInfo(BaseModel):
     name: Optional[str] = "Not mentioned in conversation"
-    age: Optional[int] = "Not mentioned"
+    age: Optional[str] = "Not mentioned"
     gender: Optional[str] = "Not mentioned"
     contact: Optional[str] = "Not mentioned"
     medical_history: List[str] = []
@@ -147,47 +125,7 @@ class AutomatedMedicalProcessor:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.whisper_model = None
         self.medical_model = settings.medical_model
-        self.ffmpeg_available = shutil.which("ffmpeg") is not None
         logger.info(f"Initialized - Device: {self.device}, Model: {self.medical_model}")
-        logger.info(f"FFmpeg available: {self.ffmpeg_available}")
-    
-    def preprocess_audio(self, input_path: str) -> str:
-        """Preprocess audio to fix common issues"""
-        if not self.ffmpeg_available:
-            logger.warning("FFmpeg not available, skipping preprocessing")
-            return input_path
-        
-        try:
-            output_path = input_path.replace(os.path.splitext(input_path)[1], '_processed.wav')
-            
-            # Convert to 16kHz mono WAV with normalization
-            cmd = [
-                'ffmpeg', '-i', input_path,
-                '-ar', '16000',  # 16kHz sample rate (Whisper's native rate)
-                '-ac', '1',      # Mono
-                '-c:a', 'pcm_s16le',  # 16-bit PCM
-                '-af', 'loudnorm,highpass=f=200,lowpass=f=3000',  # Normalize and filter
-                '-y',  # Overwrite
-                output_path
-            ]
-            
-            result = subprocess.run(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                timeout=30
-            )
-            
-            if result.returncode == 0 and os.path.exists(output_path):
-                logger.info("Audio preprocessing successful")
-                return output_path
-            else:
-                logger.warning("Audio preprocessing failed, using original")
-                return input_path
-                
-        except Exception as e:
-            logger.warning(f"Audio preprocessing error: {e}, using original file")
-            return input_path
         
     def load_whisper(self):
         """Load Whisper model lazily"""
@@ -200,31 +138,13 @@ class AutomatedMedicalProcessor:
             logger.info("Whisper model loaded")
     
     async def transcribe_audio_async(self, audio_path: str) -> Dict:
-        """Async audio transcription with preprocessing"""
+        """Async audio transcription"""
         loop = asyncio.get_event_loop()
-        
-        # Preprocess audio first
-        processed_path = await loop.run_in_executor(
-            executor,
-            self.preprocess_audio,
-            audio_path
-        )
-        
-        # Transcribe the (possibly preprocessed) audio
-        result = await loop.run_in_executor(
+        return await loop.run_in_executor(
             executor,
             self._transcribe_audio_sync,
-            processed_path
+            audio_path
         )
-        
-        # Cleanup processed file if different from original
-        if processed_path != audio_path and os.path.exists(processed_path):
-            try:
-                os.unlink(processed_path)
-            except:
-                pass
-        
-        return result
     
     def _transcribe_audio_sync(self, audio_path: str) -> Dict:
         """Synchronous transcription with Whisper"""
@@ -232,76 +152,32 @@ class AutomatedMedicalProcessor:
         
         logger.info("Starting audio transcription...")
         
-        try:
-            # Disable fp16 to avoid NaN issues, add additional parameters
-            result = self.whisper_model.transcribe(
-                audio_path,
-                fp16=False,  # Disable fp16 to prevent NaN errors
-                language='en',
-                task='transcribe',
-                verbose=False,
-                temperature=0.0,  # Deterministic decoding
-                compression_ratio_threshold=2.4,
-                logprob_threshold=-1.0,
-                no_speech_threshold=0.6,
-                condition_on_previous_text=True
-            )
-            
-            segments = []
-            for i, segment in enumerate(result.get("segments", [])):
-                text = segment.get("text", "").strip()
-                if text and len(text) > 2:
-                    segments.append({
-                        "text": text,
-                        "start": round(segment.get("start", 0), 2),
-                        "end": round(segment.get("end", 0), 2)
-                    })
-            
-            if not segments:
-                logger.warning("No valid segments found in transcription")
-                raise ValueError("No speech detected in audio file")
-            
-            logger.info(f"Transcription complete: {len(segments)} segments, {result.get('duration', 0):.1f}s")
-            
-            return {
-                "segments": segments,
-                "full_text": result.get("text", "").strip(),
-                "duration": round(result.get("duration", 0), 2),
-                "language": result.get("language", "en")
-            }
-            
-        except Exception as e:
-            logger.error(f"Transcription error: {str(e)}")
-            # Try with even safer parameters
-            logger.info("Retrying with safer parameters...")
-            try:
-                result = self.whisper_model.transcribe(
-                    audio_path,
-                    fp16=False,
-                    language='en',
-                    task='transcribe',
-                    verbose=False,
-                    temperature=0.0,
-                    best_of=1,
-                    beam_size=1
-                )
-                
-                full_text = result.get("text", "").strip()
-                if not full_text:
-                    raise ValueError("No speech detected in audio")
-                
-                return {
-                    "segments": [{"text": full_text, "start": 0, "end": result.get("duration", 0)}],
-                    "full_text": full_text,
-                    "duration": round(result.get("duration", 0), 2),
-                    "language": result.get("language", "en")
-                }
-            except Exception as retry_error:
-                logger.error(f"Retry also failed: {str(retry_error)}")
-                raise HTTPException(
-                    400, 
-                    "Failed to transcribe audio. The audio may be corrupted, too quiet, or in an unsupported format. Please ensure the audio is clear and contains speech."
-                )
+        result = self.whisper_model.transcribe(
+            audio_path,
+            fp16=(self.device == "cuda"),
+            language='en',
+            task='transcribe',
+            verbose=False
+        )
+        
+        segments = []
+        for i, segment in enumerate(result.get("segments", [])):
+            text = segment.get("text", "").strip()
+            if text and len(text) > 2:
+                segments.append({
+                    "text": text,
+                    "start": round(segment.get("start", 0), 2),
+                    "end": round(segment.get("end", 0), 2)
+                })
+        
+        logger.info(f"Transcription complete: {len(segments)} segments, {result.get('duration', 0):.1f}s")
+        
+        return {
+            "segments": segments,
+            "full_text": result.get("text", "").strip(),
+            "duration": round(result.get("duration", 0), 2),
+            "language": result.get("language", "en")
+        }
     
     async def process_conversation_async(self, transcription: Dict) -> Dict:
         """Async medical analysis"""
@@ -352,7 +228,7 @@ class AutomatedMedicalProcessor:
     def _create_analysis_prompt(self, conversation: str) -> str:
         """Create comprehensive prompt for automatic extraction"""
         
-        return f"""You are Medllama, an expert medical AI assistant. Analyze this doctor-patient conversation and extract ALL relevant information.
+        return f"""You are Meditron, an expert medical AI assistant. Analyze this doctor-patient conversation and extract ALL relevant information.
 
 CONVERSATION TRANSCRIPT:
 {conversation}
@@ -518,32 +394,15 @@ async def process_audio(
         
         # Step 1: Transcribe audio
         logger.info(f"[{conversation_id}] Step 1: Transcribing audio...")
-        try:
-            transcription = await processor.transcribe_audio_async(temp_path)
-        except ValueError as ve:
-            # Audio quality issue
-            raise HTTPException(
-                400, 
-                f"Audio transcription failed: {str(ve)}. Please ensure:\n"
-                "1. Audio contains clear speech\n"
-                "2. Audio is not corrupted\n"
-                "3. Volume is adequate\n"
-                "4. Format is supported (mp3, wav, m4a, etc.)"
-            )
+        transcription = await processor.transcribe_audio_async(temp_path)
         
         if not transcription.get("full_text"):
-            raise HTTPException(
-                400, 
-                "No speech detected in audio. Please check:\n"
-                "1. Audio volume is sufficient\n"
-                "2. There is actual conversation in the recording\n"
-                "3. Audio quality is adequate"
-            )
+            raise HTTPException(400, "No speech detected in audio")
         
         # Step 2: Process with medical LLM
         logger.info(f"[{conversation_id}] Step 2: Analyzing conversation with medical AI...")
         medical_analysis = await processor.process_conversation_async(transcription)
-        logger.info(f"medical_analysis : {medical_analysis}")
+        
         # Build response
         response = ProcessingResponse(
             conversation_id=conversation_id,
@@ -655,62 +514,6 @@ Doctor: You're welcome, Sarah. Take care and don't hesitate to reach out if you 
             "error": str(e)
         }
 
-@app.post("/api/text-2-audio")
-async def txt2audio(request: Request):
-        body = await request.json()
-        # ----------- Step 1: Conversation Script -----------
-        logger.info(body)
-        conversation = body.get("conversation")
-        
-        # ----------- Step 2: Voice Style Configuration -----------
-        voices = {
-            "doctor": "co.uk",  # British tone (professional)
-            "patient": "com"    # American tone (normal)
-        }
-
-        # ----------- Step 3: Generate Audio Clips -----------
-        audio_segments = []
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        print(base_dir)
-        temp_dir = os.path.join(base_dir, "temp_audio")
-        print(temp_dir)
-        os.makedirs(temp_dir, exist_ok=True)
-
-        for i, turn in enumerate(conversation):
-            print(f"Generating {turn['role']} speech: {turn['text']}")
-            tts = gTTS(text=turn["text"], lang="en", tld=voices[turn["role"]])
-            file_path = f"temp_audio/{i}_{turn['role']}.mp3"
-            tts.save(file_path)
-
-            segment = AudioSegment.from_file(file_path)
-            # Add pause between speakers
-            segment += AudioSegment.silent(duration=800)
-            audio_segments.append(segment)
-
-        # ----------- Step 4: Combine All Into One File -----------
-        final_audio = sum(audio_segments)
-        timestamp = datetime.utcnow().isoformat().replace(":", "-")
-        output_path = os.path.join(f"{timestamp}_doctor_patient_conversation.mp3")
-        full_output_path = os.path.join(temp_dir, output_path)
-        final_audio.export(full_output_path, format="mp3")
-
-        print(f"\n✅ Full conversation audio generated successfully → {output_path}")
-        return (f"✅ Full conversation audio generated successfully →", {output_path})
-
-        # Optional Cleanup
-        # for file in os.listdir("temp_audio"):
-        #     os.remove(os.path.join("temp_audio", file))
-        # os.rmdir("temp_audio")
- 
-# Root Page 
-@app.get("/", response_class=HTMLResponse)
-async def serve_frontend():
-    """Serve the Home page"""
-    base_dir = Path(__file__).resolve().parent
-    html_path = base_dir / "home.html"
-    html_content = html_path.read_text(encoding="utf-8")
-    return html_content   
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
@@ -719,24 +522,3 @@ if __name__ == "__main__":
         port=8000,
         log_level="info"
     )
-
-"""
-REQUIREMENTS:
-pip install fastapi uvicorn whisper torch ollama python-multipart slowapi pydantic-settings
-
-OPTIONAL (for better audio preprocessing):
-- Install FFmpeg: 
-  - Ubuntu/Debian: sudo apt-get install ffmpeg
-  - macOS: brew install ffmpeg
-  - Windows: Download from https://ffmpeg.org/
-
-SETUP:
-1. Install dependencies
-2. Pull medical model: ollama pull medllama2
-3. Run: python main_dynamic.py
-
-COMMON ISSUES:
-- NaN error: Fixed by disabling fp16 and audio preprocessing
-- No speech detected: Check audio quality and volume
-- Model not found: Run 'ollama pull medllama2'
-"""

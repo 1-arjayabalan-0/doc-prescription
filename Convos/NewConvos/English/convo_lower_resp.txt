@@ -1,0 +1,18 @@
+conversation = [
+    {"role": "doctor", "text": "Good evening. Please come in."},
+    {"role": "patient", "text": "Good evening, Doctor. I’ve been coughing continuously for the past week."},
+    {"role": "doctor", "text": "Can I have your name and age?"},
+    {"role": "patient", "text": "I’m Kavita Desai, 41 years old."},
+    {"role": "doctor", "text": "Is the cough dry or with phlegm?"},
+    {"role": "patient", "text": "It’s with thick yellow phlegm, especially in the morning."},
+    {"role": "doctor", "text": "Any fever, chest pain, or breathlessness?"},
+    {"role": "patient", "text": "Mild fever and chest heaviness."},
+    {"role": "doctor", "text": "Okay. It looks like an acute bronchitis — infection of the airways."},
+    {"role": "doctor", "text": "I’ll prescribe Amoxicillin-Clavulanate 625 mg twice daily for five days."},
+    {"role": "doctor", "text": "Also, take Ambroxol syrup 10 ml thrice daily for cough and steam inhalation twice a day."},
+    {"role": "patient", "text": "Should I take rest from work?"},
+    {"role": "doctor", "text": "Yes, take rest and stay hydrated. Avoid cold drinks and dusty environments."},
+    {"role": "doctor", "text": "I’ll note your diagnosis as 'Acute Bronchitis' and your treatment as Amoxicillin-Clavulanate and Ambroxol syrup."},
+    {"role": "patient", "text": "Thank you, Doctor. I’ll follow the advice."},
+    {"role": "doctor", "text": "You’re welcome, Ms. Desai. Get well soon."}
+]

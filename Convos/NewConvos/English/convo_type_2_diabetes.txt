@@ -1,0 +1,16 @@
+conversation = [
+    {"role": "doctor", "text": "Good morning, Mr. Iyer. How have you been?"},
+    {"role": "patient", "text": "Good morning, Doctor. I’m okay, but I’ve been feeling tired lately."},
+    {"role": "doctor", "text": "Are you taking your diabetes medicines regularly?"},
+    {"role": "patient", "text": "Yes, Metformin twice daily as you prescribed."},
+    {"role": "doctor", "text": "Alright. When was your last blood sugar check?"},
+    {"role": "patient", "text": "Two days ago — fasting sugar was 160 and post-lunch was around 240."},
+    {"role": "doctor", "text": "Those values are a bit high. I think we need to add one more tablet to improve control."},
+    {"role": "doctor", "text": "I’ll add Glimepiride 1 mg once daily before breakfast, along with Metformin."},
+    {"role": "doctor", "text": "Continue a low-carb diet, regular walking, and check sugars twice a week."},
+    {"role": "patient", "text": "Okay, Doctor. Should I worry about anything?"},
+    {"role": "doctor", "text": "No, just monitor your sugar and avoid skipping meals. If you feel dizzy or sweaty, eat something immediately."},
+    {"role": "doctor", "text": "I’ll note your diagnosis as 'Type 2 Diabetes Mellitus – uncontrolled' and update your treatment to Metformin and Glimepiride."},
+    {"role": "patient", "text": "Thank you, Doctor. I’ll follow the plan."},
+    {"role": "doctor", "text": "You’re doing well, Mr. Iyer. Come back after two weeks with your readings."}
+]

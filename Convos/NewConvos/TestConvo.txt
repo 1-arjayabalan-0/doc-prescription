@@ -1,0 +1,21 @@
+Doctor: Good morning! Please have a seat. What brings you here today?
+Patient: Hi doctor. I'm Sarah Martinez, I'm 28 years old. I've been having really bad headaches for the past week.
+Doctor: I see. Can you describe the headaches for me? Where do you feel them?
+Patient: They're mostly on the right side of my head, like a throbbing pain. Sometimes it gets so bad I feel nauseous.
+Doctor: How often are they occurring?
+Patient: Almost every day, usually in the afternoon. They last for a few hours.
+Doctor: On a scale of 1 to 10, how severe is the pain?
+Patient: I'd say around 7 or 8 when it's at its worst.
+Doctor: Are you currently taking any medications?
+Patient: Just birth control pills. Oh, and I'm allergic to penicillin.
+Doctor: Good to know. Any recent stress or changes in your routine?
+Patient: Well, I started a new job about two weeks ago. It's been pretty stressful.
+Doctor: That could certainly be a factor. Let me check your blood pressure. *checking* Your BP is 135 over 85, slightly elevated. Temperature is normal at 98.6. Based on your symptoms, this appears to be tension headaches, possibly triggered by stress.
+Patient: Is there anything I can take for it?
+Doctor: Yes, I'm going to prescribe you Sumatriptan 50 milligrams. Take one tablet when you feel a headache coming on. You can take up to two per day if needed, but not more than that. I'm also prescribing Naproxen 500 milligrams for the pain - take one tablet twice daily with food for the next 7 days.
+Patient: Okay, got it.
+Doctor: I'd also recommend stress management techniques - try to take regular breaks at work, practice some relaxation exercises, and maintain a regular sleep schedule. Avoid excessive screen time. Drink plenty of water throughout the day, and try to identify and avoid any trigger foods like caffeine or chocolate.
+Patient: Should I be worried about anything?
+Doctor: If the headaches become more severe, if you experience vision changes, confusion, or weakness, or if they don't improve in two weeks, call me immediately. Otherwise, let's schedule a follow-up appointment in three weeks to see how you're doing.
+Patient: Thank you, doctor.
+Doctor: You're welcome, Sarah. Take care and don't hesitate to reach out if you have concerns.

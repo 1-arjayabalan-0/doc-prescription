@@ -1,0 +1,18 @@
+conversation = [
+    {"role": "doctor", "text": "Hello, please come in."},
+    {"role": "patient", "text": "Hello, Doctor. I’ve been sneezing a lot lately."},
+    {"role": "doctor", "text": "Can I have your name and age, please?"},
+    {"role": "patient", "text": "I’m Rakesh Nair, 29 years old."},
+    {"role": "doctor", "text": "Alright, Mr. Nair. How long have you had these symptoms?"},
+    {"role": "patient", "text": "For about two weeks. Especially in the mornings, with a runny nose and itchy eyes."},
+    {"role": "doctor", "text": "Do you have any fever or cough?"},
+    {"role": "patient", "text": "No, just sneezing and nose blockage."},
+    {"role": "doctor", "text": "That sounds like allergic rhinitis, possibly due to dust or pollen."},
+    {"role": "doctor", "text": "I’ll prescribe Levocetirizine 5 mg once daily at night and Montelukast 10 mg daily for two weeks."},
+    {"role": "doctor", "text": "Also, use Fluticasone nasal spray, one puff in each nostril twice daily."},
+    {"role": "patient", "text": "Should I avoid anything?"},
+    {"role": "doctor", "text": "Avoid dust exposure, use masks while cleaning, and keep windows closed during high pollen times."},
+    {"role": "patient", "text": "Alright, Doctor. Thank you."},
+    {"role": "doctor", "text": "I’ll record your diagnosis as 'Allergic Rhinitis' and treatment as Levocetirizine, Montelukast, and nasal spray."},
+    {"role": "doctor", "text": "Follow up if symptoms persist or worsen."}
+]
