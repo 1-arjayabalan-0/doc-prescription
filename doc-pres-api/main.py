@@ -8,7 +8,7 @@ import json
 import tempfile
 import os
 import asyncio
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 import logging
 from pydantic import BaseModel
 import re
@@ -26,6 +26,13 @@ from dotenv import load_dotenv
 from gtts import gTTS
 from pydub import AudioSegment
 from pathlib import Path
+import io
+import cv2
+import pytesseract
+import numpy as np
+import pandas as pd
+from pdf2image import convert_from_bytes
+import easyocr
 
 load_dotenv() 
 
@@ -72,7 +79,7 @@ settings = Settings()
 # Pydantic models for response
 class PatientInfo(BaseModel):
     name: Optional[str] = "Not mentioned in conversation"
-    age: Optional[int] = "Not mentioned"
+    age: Optional[Union[int, str]] = "Not mentioned"
     gender: Optional[str] = "Not mentioned"
     contact: Optional[str] = "Not mentioned"
     medical_history: List[str] = []
@@ -99,15 +106,15 @@ class Medication(BaseModel):
     instructions: str = "Not specified"
 
 class Prescription(BaseModel):
-    chief_complaint: str
-    symptoms: List[Symptom] = []
+    chief_complaint: Optional[str]
+    symptoms: Optional[List[Symptom]] = []
     vital_signs: Optional[VitalSigns] = None
-    diagnosis: str
-    medications: List[Medication] = []
-    lifestyle_advice: List[str] = []
-    precautions: List[str] = []
-    follow_up: str = "Not specified"
-    additional_notes: str = ""
+    diagnosis: Optional[str]
+    medications: Optional[List[Medication]] = []
+    lifestyle_advice: Optional[List[str]] = []
+    precautions: Optional[List[str]] = []
+    follow_up: Optional[str] = "Not specified"
+    additional_notes: Optional[str] = None
 
 class ProcessingResponse(BaseModel):
     conversation_id: str
@@ -117,6 +124,12 @@ class ProcessingResponse(BaseModel):
     full_conversation: str
     conversation_summary: str
     processing_info: Dict
+    
+class ProcessedLabReportResponse(BaseModel):
+    gpu_used: int
+    tests_extracted: str
+    data: Dict
+    summary: str
 
 # FastAPI app
 app = FastAPI(
@@ -141,6 +154,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Initialize EasyOCR with auto GPU fallback
+try:
+    reader = easyocr.Reader(['en'], gpu=True)
+    GPU_MODE = True
+except Exception:
+    reader = easyocr.Reader(['en'], gpu=False)
+    GPU_MODE = False
 
 class AutomatedMedicalProcessor:
     def __init__(self):
@@ -464,6 +485,7 @@ Return the JSON now:"""
 # Initialize processor
 processor = AutomatedMedicalProcessor()
 
+# Process Audio (Patient-Doc Conversation)
 @app.post("/api/process", response_model=ProcessingResponse)
 @limiter.limit("10/minute" if settings.enable_rate_limiting else "1000/minute")
 async def process_audio(
@@ -579,6 +601,94 @@ async def process_audio(
             except:
                 pass
 
+# Process Documents (Lab Reports)
+def preprocess_image(image_bytes: bytes):
+    """Basic preprocessing for OCR clarity"""
+    image = np.frombuffer(image_bytes, np.uint8)
+    img = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+    return gray
+
+def ocr_extract_text(img: np.ndarray):
+    """Use Tesseract OCR as baseline text extraction"""
+    text = pytesseract.image_to_string(img)
+    return text
+
+def easyocr_extract_text(img: np.ndarray):
+    """Use EasyOCR (GPU if available)"""
+    result = reader.readtext(img)
+    lines = [r[1] for r in result]
+    return "\n".join(lines)
+
+def parse_lab_values(text: str):
+    """
+    Very simple rule-based parser for lab tests.
+    """
+    data = []
+    print(f"Output-text: {text}")
+    for line in text.splitlines():
+        parts = line.strip().split()
+        print(f"Output-parts: {parts}")
+        if len(parts) >= 3:
+            test = parts[0]
+            print(f"Output-test: {test}")
+            try:
+                value = float(parts[1].replace(",", "."))
+                print(f"Output-value: {value}")
+                unit = parts[2]
+                data.append({"test": test, "value": value, "unit": unit})
+            except ValueError:
+                continue
+        print(f"Output-data: {data}")
+    return pd.DataFrame(data)
+
+def summarize_report(df: pd.DataFrame):
+    """Simple human summary (placeholder for LLM)"""
+    summary = []
+    for _, row in df.iterrows():
+        status = "Normal"
+        if row["value"] > 100: 
+            status = "High"
+        elif row["value"] < 10:
+            status = "Low"
+        summary.append(f"{row['test']} = {row['value']} {row['unit']} ({status})")
+    return "\n".join(summary)
+
+@app.post("/api/lab-report-analyze", response_model=ProcessedLabReportResponse)
+@limiter.limit("10/minute" if settings.enable_rate_limiting else "1000/minute")
+async def analyze_lab_report(request: Request, 
+                             file: UploadFile = File(...)):
+    """Accepts PDF/JPG/PNG and returns structured analysis"""
+    file_bytes = await file.read()
+    results = []
+
+    # Handle PDF (multi-page)
+    if file.filename.lower().endswith(".pdf"):
+        images = convert_from_bytes(file_bytes)
+        texts = []
+        for img in images:
+            buf = io.BytesIO()
+            img.save(buf, format="JPEG")
+            proc = preprocess_image(buf.getvalue())
+            text = easyocr_extract_text(proc) if GPU_MODE else ocr_extract_text(proc)
+            texts.append(text)
+        full_text = "\n".join(texts)
+    else:
+        # Image file (JPG/PNG)
+        proc = preprocess_image(file_bytes)
+        full_text = easyocr_extract_text(proc) if GPU_MODE else ocr_extract_text(proc)
+
+    df = parse_lab_values(full_text)
+    summary = summarize_report(df)
+    print(f"Output-DF-SUMM: {df} {summary}")
+    return ProcessedLabReportResponse(
+        gpu_used = GPU_MODE,
+        tests_extracted = len(df),
+        data = df.to_dict(orient="records"),
+        summary = summary
+    )
+    
 @app.get("/api/health")
 async def health_check():
     """Check API health and model status"""

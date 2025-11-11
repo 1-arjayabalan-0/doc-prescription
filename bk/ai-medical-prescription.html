@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AI Medical Assistant</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1d88ea",
+              "medical-blue": "#1d88ea",
+              "background-light": "#f8f9fa",
+              "background-dark": "#101922",
+              "doctor-blue": "#dbeafe",
+              "doctor-blue-dark": "#1e3a8a",
+              "patient-gray": "#f3f4f6",
+              "patient-gray-dark": "#374151",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .waveform {
+        display: flex;
+        align-items: center;
+        height: 48px;
+        gap: 3px;
+      }
+      .waveform .bar {
+        width: 4px;
+        background-color: #1d88ea;
+        border-radius: 999px;
+        animation: wave 1.5s ease-in-out infinite;
+      }
+      @keyframes wave {
+        0%,
+        100% {
+          transform: scaleY(0.2);
+        }
+        50% {
+          transform: scaleY(1);
+        }
+      }
+      .sidebar {
+        transition: width 0.3s ease-in-out, padding 0.3s ease-in-out,
+          transform 0.3s ease-in-out;
+        will-change: width;
+      }
+      .sidebar-open {
+        width: 384px;
+      }
+      .sidebar-closed {
+        width: 0px;
+        padding-left: 0;
+        padding-right: 0;
+        overflow: hidden;
+      }
+      .main-content-expanded {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200"
+  >
+    <div class="relative flex h-auto min-h-screen w-full flex-col">
+      <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-700 px-4 sm:px-8 py-3 bg-white dark:bg-slate-900/50 sticky top-0 z-20"
+      >
+        <div class="flex items-center gap-3 text-slate-900 dark:text-slate-50">
+          <div class="text-medical-blue size-7">
+            <svg
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.9999 1.5C14.735 1.5 17.2917 2.45952 19.242 4.16112L19.2421 4.16119C19.3039 4.2154 19.3567 4.27663 19.403 4.34148L19.4032 4.34175C21.4344 6.2736 22.4999 8.87532 22.4999 11.625C22.4999 17.585 17.7791 22.5 11.9999 22.5C6.22072 22.5 1.49994 17.585 1.49994 11.625C1.49994 8.87532 2.56549 6.2736 4.59669 4.34175L4.59688 4.34148C4.64315 4.27663 4.69596 4.2154 4.75775 4.16119L4.75788 4.16112C6.70817 2.45952 9.26484 1.5 11.9999 1.5ZM10.4999 15.75V12.75H7.49994C7.08573 12.75 6.74994 12.4142 6.74994 12C6.74994 11.5858 7.08573 11.25 7.49994 11.25H10.4999V8.25C10.4999 7.83579 10.8357 7.5 11.2499 7.5H12.7499C13.1641 7.5 13.4999 7.83579 13.4999 8.25V11.25H16.5C16.9142 11.25 17.25 11.5858 17.25 12C17.25 12.4142 16.9142 12.75 16.5 12.75H13.4999V15.75C13.4999 16.1642 13.1641 16.5 12.7499 16.5H11.2499C10.8357 16.5 10.4999 16.1642 10.4999 15.75Z"
+              ></path>
+            </svg>
+          </div>
+          <h1 class="text-xl font-bold tracking-tight">AI Medical Assistant</h1>
+        </div>
+        <button
+          class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200"
+        >
+          <span class="material-symbols-outlined text-2xl">person</span>
+        </button>
+      </header>
+      <div class="flex flex-1">
+        <aside
+          class="sidebar sidebar-open flex-shrink-0 flex flex-col bg-white dark:bg-slate-900/50 border-r border-slate-200 dark:border-slate-800 relative h-[calc(100vh-65px)] sticky top-[65px]"
+          id="sidebar"
+        >
+          <div
+            class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center whitespace-nowrap"
+          >
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white">
+              Conversation Transcript
+            </h2>
+          </div>
+          <div class="flex-1 overflow-y-auto p-4">
+            <div class="flex flex-col gap-4">
+              <div class="flex justify-start">
+                <div class="flex flex-col items-start gap-1 max-w-[85%]">
+                  <div
+                    class="bg-patient-gray dark:bg-patient-gray-dark text-slate-800 dark:text-slate-200 p-3 rounded-xl rounded-tl-sm"
+                  >
+                    Good morning, Doctor. I've been having this persistent
+                    headache for the past three days. It's a dull ache right
+                    behind my eyes.
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end">
+                <div class="flex flex-col items-end gap-1 max-w-[85%]">
+                  <div
+                    class="bg-doctor-blue dark:bg-doctor-blue-dark text-slate-800 dark:text-slate-100 p-3 rounded-xl rounded-tr-sm"
+                  >
+                    I see. Good morning. Besides the headache, have you
+                    experienced any other symptoms? Fever, nausea, or
+                    sensitivity to light?
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-start">
+                <div class="flex flex-col items-start gap-1 max-w-[85%]">
+                  <div
+                    class="bg-patient-gray dark:bg-patient-gray-dark text-slate-800 dark:text-slate-200 p-3 rounded-xl rounded-tl-sm"
+                  >
+                    A little bit of sensitivity to light, yes. No fever, and
+                    only mild nausea yesterday morning.
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end">
+                <div class="flex flex-col items-end gap-1 max-w-[85%]">
+                  <div
+                    class="bg-doctor-blue dark:bg-doctor-blue-dark text-slate-800 dark:text-slate-100 p-3 rounded-xl rounded-tr-sm"
+                  >
+                    Okay, it sounds like you might be experiencing a tension
+                    headache, possibly bordering on a mild migraine. I'll
+                    prescribe something for the pain and nausea.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <main
+          class="flex-1 flex flex-col gap-8 p-4 sm:p-6 lg:p-8 relative transition-all duration-300 ease-in-out"
+          id="main-content"
+        >
+          <button
+            class="absolute top-1/2 -translate-y-1/2 -left-4 z-10 w-8 h-8 flex items-center justify-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full shadow-md hover:bg-slate-50 dark:hover:bg-slate-700 text-medical-blue"
+            id="sidebar-toggle"
+          >
+            <span
+              class="material-symbols-outlined transition-transform duration-300 ease-in-out"
+              id="toggle-icon"
+              >chevron_left</span
+            >
+          </button>
+          <div
+            class="flex flex-col gap-6 p-6 bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"
+          >
+            <div
+              class="flex flex-col sm:flex-row flex-wrap justify-between items-center gap-4"
+            >
+              <div class="flex-1 min-w-72">
+                <h2 class="text-slate-900 dark:text-white text-xl font-bold">
+                  Start Consultation
+                </h2>
+                <p
+                  class="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal pt-1"
+                >
+                  Record or upload the patient conversation audio.
+                </p>
+              </div>
+              <div class="flex w-full sm:w-auto gap-3 flex-wrap justify-start">
+                <button
+                  class="flex flex-1 sm:flex-none min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-5 bg-medical-blue text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-medical-blue/90 transition-colors"
+                >
+                  <span>🎙️</span>
+                  <span class="truncate">Record Conversation</span>
+                </button>
+                <button
+                  class="flex flex-1 sm:flex-none min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-5 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                >
+                  <span>📁</span>
+                  <span class="truncate">Upload Audio</span>
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 pt-2">
+              <div class="flex items-center gap-4">
+                <div class="waveform">
+                  <div
+                    class="bar"
+                    style="height: 60%; animation-delay: 0.1s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 100%; animation-delay: 0.2s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 40%; animation-delay: 0.3s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 80%; animation-delay: 0.4s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 50%; animation-delay: 0.5s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 90%; animation-delay: 0.6s;"
+                  ></div>
+                  <div
+                    class="bar"
+                    style="height: 30%; animation-delay: 0.7s;"
+                  ></div>
+                </div>
+                <p
+                  class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal"
+                >
+                  Recording... 01:23
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <button
+              class="flex min-w-[84px] max-w-[480px] w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-8 bg-medical-blue text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-medical-blue/90 transition-colors"
+            >
+              <span class="material-symbols-outlined">auto_awesome</span>
+              <span class="truncate">Generate Prescription</span>
+            </button>
+          </div>
+          <div
+            class="flex flex-col gap-6 p-6 sm:p-8 bg-white dark:bg-slate-800/50 rounded-xl border-2 border-medical-blue/20 shadow-lg"
+          >
+            <div
+              class="flex flex-col sm:flex-row justify-between items-start border-b border-slate-200 dark:border-slate-700 pb-4 gap-4"
+            >
+              <div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">
+                  Dr. Evelyn Reed
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400">
+                  Reg. No: 12345
+                </p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">
+                  Wellness Clinic, 123 Health St, Medville
+                </p>
+              </div>
+              <div class="text-left sm:text-right">
+                <p
+                  class="text-sm text-slate-600 dark:text-slate-400 font-medium"
+                >
+                  Patient: <span class="font-normal">John Doe</span>
+                </p>
+                <p
+                  class="text-sm text-slate-600 dark:text-slate-400 font-medium"
+                >
+                  Age/Gender: <span class="font-normal">34 / Male</span>
+                </p>
+                <p
+                  class="text-sm text-slate-600 dark:text-slate-400 font-medium"
+                >
+                  Date: <span class="font-normal">23 Oct 2023</span>
+                </p>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2">
+              <h4
+                class="text-base font-bold text-slate-800 dark:text-slate-200"
+              >
+                Diagnosis / Symptoms
+              </h4>
+              <p
+                class="text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700"
+              >
+                Patient reports a persistent dull headache for 3 days, located
+                behind the eyes. Accompanied by photosensitivity and mild
+                nausea. Suspected tension headache or mild migraine.
+              </p>
+            </div>
+            <div class="flex flex-col gap-3">
+              <h4
+                class="text-base font-bold text-slate-800 dark:text-slate-200"
+              >
+                Medication (Rx)
+              </h4>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                  <thead
+                    class="bg-slate-100 dark:bg-slate-700 text-xs uppercase text-slate-700 dark:text-slate-300"
+                  >
+                    <tr>
+                      <th class="px-4 py-3 rounded-l-lg" scope="col">
+                        Medicine
+                      </th>
+                      <th class="px-4 py-3" scope="col">Dosage</th>
+                      <th class="px-4 py-3" scope="col">Duration</th>
+                      <th class="px-4 py-3 rounded-r-lg" scope="col">Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-slate-800 dark:text-slate-200">
+                    <tr class="border-b border-slate-100 dark:border-slate-700">
+                      <td class="px-4 py-3 font-medium">Ibuprofen</td>
+                      <td class="px-4 py-3">400mg</td>
+                      <td class="px-4 py-3">5 days</td>
+                      <td class="px-4 py-3">
+                        1 tablet after meal, twice a day
+                      </td>
+                    </tr>
+                    <tr class="border-b border-slate-100 dark:border-slate-700">
+                      <td class="px-4 py-3 font-medium">Domperidone</td>
+                      <td class="px-4 py-3">10mg</td>
+                      <td class="px-4 py-3">3 days</td>
+                      <td class="px-4 py-3">
+                        1 tablet before meal, if nausea persists
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div
+              class="flex flex-col sm:flex-row justify-between items-end border-t border-slate-200 dark:border-slate-700 pt-4 mt-2 gap-4"
+            >
+              <div>
+                <p
+                  class="text-sm font-medium text-slate-600 dark:text-slate-400"
+                >
+                  Next Visit:
+                </p>
+                <p class="text-sm text-slate-800 dark:text-slate-200">
+                  Follow up in 1 week if symptoms do not improve.
+                </p>
+              </div>
+              <div class="w-full sm:w-auto text-center">
+                <p class="text-sm text-slate-800 dark:text-slate-200">
+                  _________________________
+                </p>
+                <p class="text-sm font-bold text-slate-800 dark:text-slate-200">
+                  Doctor's Signature
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center pb-8">
+            <button
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-5 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            >
+              <span class="material-symbols-outlined">download</span>
+              <span class="truncate">Download as PDF</span>
+            </button>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("main-content");
+        const toggleButton = document.getElementById("sidebar-toggle");
+        const toggleIcon = document.getElementById("toggle-icon");
+        function toggleSidebar() {
+          sidebar.classList.toggle("sidebar-open");
+          sidebar.classList.toggle("sidebar-closed");
+          mainContent.classList.toggle("main-content-expanded");
+          toggleIcon.classList.toggle("rotate-180");
+        }
+        toggleButton.addEventListener("click", toggleSidebar);
+        function handleResize() {
+          if (window.innerWidth < 1280) {
+            if (sidebar.classList.contains("sidebar-open")) {
+              toggleSidebar();
+            }
+          }
+        }
+        window.addEventListener("resize", handleResize);
+        // Initial check in case the user starts with a smaller screen
+        handleResize();
+      });
+    </script>
+  </body>
+</html>

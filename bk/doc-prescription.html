@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Medical Audio Transcription</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 1rem;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .main-card {
+        background: white;
+        border-radius: 20px;
+        padding: 10px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
+      .sec {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .prev-head {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        min-height: 60px;
+        background: #f8f9fa;
+        padding: 0px 15px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+      }
+
+      .info-box {
+        background-color: #f0f0f0;
+        color: #959191;
+        height: 150px;
+        padding: 10px 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 600;
+        max-width: 80%;
+        border-radius: 15px;
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      .rgt-sec {
+        width: 70%;
+        border-left: 1px solid #eee;
+        padding: 0px 10px;
+      }
+
+      .lft-sec {
+        width: 30%;
+      }
+      .audio-box {
+        background-color: #ffffff;
+        border: 1px solid #e7e7e7;
+        border-radius: 10px;
+        padding: 5px 10px;
+        margin-top: 10px;
+        flex: 1;
+      }
+      .audio-head {
+        margin-bottom: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .upload-section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+      }
+
+      .upload-box {
+        border: 3px dashed #ddd;
+        border-radius: 15px;
+        padding: 40px 20px;
+        text-align: center;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .upload-box:hover {
+        border-color: #667eea;
+        background: #f8f9ff;
+      }
+
+      .upload-box.active {
+        border-color: #667eea;
+        background: #f0f4ff;
+      }
+
+      .icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 20px;
+        fill: #667eea;
+      }
+
+      .icon.recording {
+        fill: #ef4444;
+        animation: pulse 1.5s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .btn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin: 5px;
+      }
+
+      .btn-primary {
+        background: #667eea;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #5568d3;
+        transform: translateY(-2px);
+      }
+
+      .btn-danger {
+        background: #ef4444;
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: #dc2626;
+      }
+
+      .btn-success {
+        background: #10b981;
+        color: white;
+        font-size: 18px;
+        padding: 15px 40px;
+      }
+
+      .btn-success:hover {
+        background: #059669;
+        transform: scale(1.05);
+      }
+
+      .btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .recording-time {
+        font-size: 32px;
+        font-weight: bold;
+        color: #ef4444;
+        margin: 20px 0;
+        font-family: "Courier New", monospace;
+      }
+
+      .audio-player {
+        width: 100%;
+        margin-top: 8px;
+        border-radius: 5px;
+      }
+
+      .process-section {
+        text-align: center;
+        padding: 10px;
+      }
+
+      .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #667eea;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .alert {
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        font-weight: 500;
+      }
+
+      .alert-error {
+        background: #fee2e2;
+        color: #dc2626;
+        border: 2px solid #fca5a5;
+      }
+
+      .alert-success {
+        background: #d1fae5;
+        color: #065f46;
+        border: 2px solid #6ee7b7;
+      }
+
+      .result-section {
+        margin-top: 30px;
+        max-width: 90%;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .result-grid {
+        background: white;
+        border: 2px solid #000;
+        padding: 0;
+        margin-top: 20px;
+      }
+
+      /* Prescription Header */
+      .result-grid > h2 {
+        background: #1a1a1a;
+        color: white;
+        padding: 15px 30px;
+        margin: 0;
+        border-bottom: 3px solid #000;
+        text-align: center;
+        font-size: 1.4em;
+        letter-spacing: 1px;
+      }
+
+      .result-card {
+        background: white;
+        padding: 20px 30px;
+        border-bottom: 1px solid #ddd;
+        border-radius: 0;
+        border-left: none;
+      }
+
+      .result-card:last-child {
+        border-bottom: none;
+      }
+
+      .result-card h3 {
+        color: #000;
+        margin: 0 0 12px 0;
+        font-size: 1em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 8px;
+      }
+
+      .result-card p {
+        color: #000;
+        line-height: 1.8;
+        margin: 8px 0;
+        font-size: 0.95em;
+      }
+
+      .result-card strong {
+        font-weight: 600;
+        min-width: 120px;
+        display: inline-block;
+      }
+
+      .result-card ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 10px 0;
+      }
+
+      .result-card li {
+        color: #000;
+        line-height: 1.8;
+        margin: 6px 0;
+        padding-left: 0;
+        font-size: 0.95em;
+      }
+
+      .result-card li::before {
+        content: "○ ";
+        color: #000;
+        font-weight: normal;
+        margin-right: 8px;
+      }
+
+      .full-width {
+        grid-column: 1 / -1;
+      }
+
+      /* Rx Symbol for Medications */
+      .result-card.medications-section h3::before {
+        content: "℞ ";
+        font-size: 1.5em;
+        margin-right: 10px;
+        color: #000;
+      }
+
+      .medication-item {
+        background: #f9f9f9;
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 0;
+        border: 1px solid #000;
+        border-left: 4px solid #000;
+      }
+
+      .medication-name {
+        font-weight: 700;
+        color: #000;
+        font-size: 1.05em;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+
+      /* Patient Info Section - Two Column */
+      .patient-vitals-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .patient-vitals-row .result-card {
+        border-bottom: none;
+        border-right: 1px solid #ddd;
+      }
+
+      .patient-vitals-row .result-card:last-child {
+        border-right: none;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      /* Print Styles */
+      @media print {
+        body {
+          background: white;
+        }
+
+        .header,
+        .upload-section,
+        button {
+          display: none;
+        }
+
+        .result-section {
+          margin: 0;
+          padding: 0;
+        }
+
+        .result-grid {
+          border: 2px solid #000;
+          page-break-inside: avoid;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .upload-section {
+          grid-template-columns: 1fr;
+        }
+
+        .header h1 {
+          font-size: 1.8em;
+        }
+
+        .main-card {
+          padding: 10px;
+        }
+
+        .result-section {
+          max-width: 100%;
+        }
+
+        .result-card {
+          padding: 15px 20px;
+        }
+
+        .patient-vitals-row {
+          grid-template-columns: 1fr;
+        }
+
+        .patient-vitals-row .result-card {
+          border-right: none;
+          border-bottom: 1px solid #ddd;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🏥 Medical Audio Transcription</h1>
+        <p>
+          Upload or record doctor-patient conversations to generate
+          prescriptions automatically
+        </p>
+      </div>
+
+      <div class="main-card">
+        <div class="sec lft-sec">
+          <!-- Upload/Record Section -->
+          <div class="upload-section">
+            <!-- Record Audio -->
+            <div class="upload-box" id="recordBox">
+              <svg
+                class="icon"
+                id="micIcon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+                ></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+              <h3>Record Audio</h3>
+              <p>Click to start recording the conversation</p>
+              <div id="recordingTime" class="recording-time hidden">00:00</div>
+              <div style="margin-top: 20px;">
+                <button class="btn btn-primary" id="startRecordBtn">
+                  Start Recording
+                </button>
+                <button class="btn btn-danger hidden" id="stopRecordBtn">
+                  Stop Recording
+                </button>
+              </div>
+            </div>
+
+            <!-- Upload Audio -->
+            <div
+              class="upload-box"
+              id="uploadBox"
+              onclick="document.getElementById('fileInput').click()"
+            >
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <h3>Upload Audio File</h3>
+              <p>MP3, WAV, M4A, OGG, FLAC, or WEBM</p>
+              <input
+                type="file"
+                id="fileInput"
+                accept="audio/*,.mp3,.wav,.m4a,.ogg,.flac,.webm"
+              />
+              <button class="btn btn-primary" style="margin-top: 20px;">
+                Choose File
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="sec rgt-sec">
+          <!-- Audio Preview -->
+          <div class="prev-head">
+            <div id="audioPreview" class="audio-box">
+              <h3 class="audio-head">
+                <span>Audio Preview:</span>
+                <button class="btn btn-danger" id="clearBtn">
+                  Clear
+                </button>
+              </h3>
+              <audio id="audioPlayer" class="audio-player" controls></audio>
+            </div>
+
+            <button class="btn btn-success" id="processBtn" disabled>
+              Generate Prescription
+            </button>
+          </div>
+          <div class="info-box" id="message_info">
+            <div>
+              Kindly Start Recording or Upload a Conversation Audio to
+            </div>
+            <div>
+              Generate a Prescription
+            </div>
+          </div>
+          <!-- Process Section -->
+          <div class="process-section">
+            <div id="loader" class="hidden">
+              <div class="loader"></div>
+              <p style="color: #667eea; font-weight: 600; margin-top: 10px;">
+                Processing audio... This may take a minute
+              </p>
+            </div>
+          </div>
+
+          <!-- Error Display -->
+          <div id="errorAlert" class="alert alert-error hidden"></div>
+
+          <!-- Success Display -->
+          <div id="successAlert" class="alert alert-success hidden"></div>
+
+          <!-- Results Section -->
+          <div id="resultSection" class="result-section hidden">
+            <h2 style="color: #667eea; margin-bottom: 20px;">
+              📋 Medical Analysis Results
+            </h2>
+
+            <div class="result-grid">
+              <!-- Patient Info -->
+              <div class="result-card">
+                <h3>👤 Patient Information</h3>
+                <p><strong>Name:</strong> <span id="patientName"></span></p>
+                <p><strong>Age:</strong> <span id="patientAge"></span></p>
+                <p><strong>Gender:</strong> <span id="patientGender"></span></p>
+                <p>
+                  <strong>Contact:</strong> <span id="patientContact"></span>
+                </p>
+              </div>
+
+              <div class="flex flex-col gap-4">
+                <div class="flex justify-start">
+                  <div class="flex flex-col items-start gap-1 max-w-[85%]">
+                    <div
+                      class="bg-patient-gray dark:bg-patient-gray-dark text-slate-800 dark:text-slate-200 p-3 rounded-xl rounded-tl-sm"
+                    >
+                      Good morning, Doctor. I've been having this persistent
+                      headache for the past three days. It's a dull ache right
+                      behind my eyes.
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <div class="flex flex-col items-end gap-1 max-w-[85%]">
+                    <div
+                      class="bg-doctor-blue dark:bg-doctor-blue-dark text-slate-800 dark:text-slate-100 p-3 rounded-xl rounded-tr-sm"
+                    >
+                      I see. Good morning. Besides the headache, have you
+                      experienced any other symptoms? Fever, nausea, or
+                      sensitivity to light?
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-start">
+                  <div class="flex flex-col items-start gap-1 max-w-[85%]">
+                    <div
+                      class="bg-patient-gray dark:bg-patient-gray-dark text-slate-800 dark:text-slate-200 p-3 rounded-xl rounded-tl-sm"
+                    >
+                      A little bit of sensitivity to light, yes. No fever, and
+                      only mild nausea yesterday morning.
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <div class="flex flex-col items-end gap-1 max-w-[85%]">
+                    <div
+                      class="bg-doctor-blue dark:bg-doctor-blue-dark text-slate-800 dark:text-slate-100 p-3 rounded-xl rounded-tr-sm"
+                    >
+                      Okay, it sounds like you might be experiencing a tension
+                      headache, possibly bordering on a mild migraine. I'll
+                      prescribe something for the pain and nausea.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Vital Signs -->
+              <div class="result-card">
+                <h3>🩺 Vital Signs</h3>
+                <p><strong>BP:</strong> <span id="vitalBP"></span></p>
+                <p><strong>Temp:</strong> <span id="vitalTemp"></span></p>
+                <p><strong>Heart Rate:</strong> <span id="vitalHR"></span></p>
+                <p><strong>Weight:</strong> <span id="vitalWeight"></span></p>
+              </div>
+
+              <!-- Chief Complaint & Diagnosis -->
+              <div class="result-card full-width">
+                <h3>🔍 Diagnosis</h3>
+                <p>
+                  <strong>Chief Complaint:</strong>
+                  <span id="chiefComplaint"></span>
+                </p>
+                <p><strong>Diagnosis:</strong> <span id="diagnosis"></span></p>
+              </div>
+
+              <!-- Symptoms -->
+              <div class="result-card">
+                <h3>⚕️ Symptoms</h3>
+                <ul id="symptomsList"></ul>
+              </div>
+
+              <!-- Medications -->
+              <div class="result-card">
+                <h3>💊 Medications</h3>
+                <div id="medicationsList"></div>
+              </div>
+
+              <!-- Medical History -->
+              <div class="result-card">
+                <h3>📜 Medical History</h3>
+                <ul id="historyList"></ul>
+              </div>
+
+              <!-- Allergies -->
+              <div class="result-card">
+                <h3>⚠️ Allergies</h3>
+                <ul id="allergiesList"></ul>
+              </div>
+
+              <!-- Lifestyle Advice -->
+              <div class="result-card full-width">
+                <h3>🏃 Lifestyle Advice</h3>
+                <ul id="adviceList"></ul>
+              </div>
+
+              <!-- Follow Up -->
+              <div class="result-card full-width">
+                <h3>📅 Follow Up</h3>
+                <p id="followUp"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let mediaRecorder;
+      let audioChunks = [];
+      let recordingInterval;
+      let recordingSeconds = 0;
+      let currentAudioBlob = null;
+
+      const API_URL = "http://localhost:8000/api/process";
+
+      // Elements
+      const startRecordBtn = document.getElementById("startRecordBtn");
+      const stopRecordBtn = document.getElementById("stopRecordBtn");
+      const recordingTime = document.getElementById("recordingTime");
+      const micIcon = document.getElementById("micIcon");
+      const fileInput = document.getElementById("fileInput");
+      const audioPreview = document.getElementById("audioPreview");
+      const audioPlayer = document.getElementById("audioPlayer");
+      const processBtn = document.getElementById("processBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const loader = document.getElementById("loader");
+      const errorAlert = document.getElementById("errorAlert");
+      const successAlert = document.getElementById("successAlert");
+      const resultSection = document.getElementById("resultSection");
+      const messageInfo = document.getElementById("message_info");
+
+      // Start Recording
+      startRecordBtn.addEventListener("click", async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+
+          mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: "audio/mp3" });
+            currentAudioBlob = audioBlob;
+            const audioUrl = URL.createObjectURL(audioBlob);
+            audioPlayer.src = audioUrl;
+            audioPreview.classList.remove("hidden");
+            processBtn.disabled = false;
+            stream.getTracks().forEach((track) => track.stop());
+          };
+
+          mediaRecorder.start();
+          startRecordBtn.classList.add("hidden");
+          stopRecordBtn.classList.remove("hidden");
+          recordingTime.classList.remove("hidden");
+          micIcon.classList.add("recording");
+
+          recordingSeconds = 0;
+          recordingInterval = setInterval(() => {
+            recordingSeconds++;
+            const mins = Math.floor(recordingSeconds / 60);
+            const secs = recordingSeconds % 60;
+            recordingTime.textContent = `${mins
+              .toString()
+              .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+          }, 1000);
+
+          hideError();
+        } catch (err) {
+          showError(
+            "Microphone access denied. Please allow microphone permissions."
+          );
+        }
+      });
+
+      // Stop Recording
+      stopRecordBtn.addEventListener("click", () => {
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+          stopRecordBtn.classList.add("hidden");
+          startRecordBtn.classList.remove("hidden");
+          micIcon.classList.remove("recording");
+          clearInterval(recordingInterval);
+        }
+      });
+
+      // File Upload
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          currentAudioBlob = file;
+          const audioUrl = URL.createObjectURL(file);
+          audioPlayer.src = audioUrl;
+          audioPreview.classList.remove("hidden");
+          processBtn.disabled = false;
+          hideError();
+        }
+      });
+
+      // Clear Audio
+      clearBtn.addEventListener("click", () => {
+        currentAudioBlob = null;
+        audioPlayer.src = "";
+        // audioPreview.classList.add("hidden");
+        processBtn.disabled = true;
+        fileInput.value = "";
+        // recordingTime.classList.add("hidden");
+        recordingTime.textContent = "00:00";
+        hideError();
+        hideSuccess();
+        resultSection.classList.add("hidden");
+        messageInfo.classList.remove("hidden");
+      });
+
+      // Process Audio
+      processBtn.addEventListener("click", async () => {
+        if (!currentAudioBlob) return;
+
+        hideError();
+        hideSuccess();
+        resultSection.classList.add("hidden");
+        loader.classList.remove("hidden");
+        messageInfo.classList.add("hidden");
+        processBtn.disabled = true;
+
+        const formData = new FormData();
+        formData.append("audio", currentAudioBlob, "recording.mp3");
+
+        try {
+          const response = await fetch(API_URL, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || "Processing failed");
+          }
+
+          const data = await response.json();
+          displayResults(data);
+          showSuccess("✓ Audio processed successfully!");
+        } catch (err) {
+          showError(
+            err.message ||
+              "Failed to process audio. Please check your connection and try again."
+          );
+          processBtn.disabled = false;
+        } finally {
+          loader.classList.add("hidden");
+          messageInfo.classList.add("hidden");
+        }
+      });
+
+      // Display Results
+      function displayResults(data) {
+        const { patient_info, prescription } = data;
+
+        // Patient Info
+        document.getElementById("patientName").textContent =
+          patient_info.name || "Not mentioned";
+        document.getElementById("patientAge").textContent =
+          patient_info.age || "Not mentioned";
+        document.getElementById("patientGender").textContent =
+          patient_info.gender || "Not mentioned";
+        document.getElementById("patientContact").textContent =
+          patient_info.contact || "Not mentioned";
+
+        // Vital Signs
+        const vitals = prescription.vital_signs || {};
+        document.getElementById("vitalBP").textContent =
+          vitals.blood_pressure || "Not recorded";
+        document.getElementById("vitalTemp").textContent =
+          vitals.temperature || "Not recorded";
+        document.getElementById("vitalHR").textContent =
+          vitals.heart_rate || "Not recorded";
+        document.getElementById("vitalWeight").textContent =
+          vitals.weight || "Not recorded";
+
+        // Diagnosis
+        document.getElementById("chiefComplaint").textContent =
+          prescription.chief_complaint || "Not specified";
+        document.getElementById("diagnosis").textContent =
+          prescription.diagnosis || "Not specified";
+
+        // Symptoms
+        const symptomsList = document.getElementById("symptomsList");
+        symptomsList.innerHTML = "";
+        if (prescription.symptoms && prescription.symptoms.length > 0) {
+          prescription.symptoms.forEach((s) => {
+            const li = document.createElement("li");
+            li.textContent = `${s.symptom} (${
+              s.duration || "duration unknown"
+            }, ${s.severity || "severity unknown"})`;
+            symptomsList.appendChild(li);
+          });
+        } else {
+          symptomsList.innerHTML = "<li>No symptoms documented</li>";
+        }
+
+        // Medications
+        const medicationsList = document.getElementById("medicationsList");
+        medicationsList.innerHTML = "";
+        if (prescription.medications && prescription.medications.length > 0) {
+          prescription.medications.forEach((med) => {
+            const div = document.createElement("div");
+            div.className = "medication-item";
+            div.innerHTML = `
+                        <div class="medication-name">${med.name}</div>
+                        <p><strong>Dosage:</strong> ${
+                          med.dosage || "Not specified"
+                        }</p>
+                        <p><strong>Frequency:</strong> ${
+                          med.frequency || "Not specified"
+                        }</p>
+                        <p><strong>Duration:</strong> ${
+                          med.duration || "Not specified"
+                        }</p>
+                        <p><strong>Instructions:</strong> ${
+                          med.instructions || "Not specified"
+                        }</p>
+                    `;
+            medicationsList.appendChild(div);
+          });
+        } else {
+          medicationsList.innerHTML = "<p>No medications prescribed</p>";
+        }
+
+        // Medical History
+        const historyList = document.getElementById("historyList");
+        historyList.innerHTML = "";
+        if (
+          patient_info.medical_history &&
+          patient_info.medical_history.length > 0
+        ) {
+          patient_info.medical_history.forEach((h) => {
+            const li = document.createElement("li");
+            li.textContent = h;
+            historyList.appendChild(li);
+          });
+        } else {
+          historyList.innerHTML = "<li>No medical history documented</li>";
+        }
+
+        // Allergies
+        const allergiesList = document.getElementById("allergiesList");
+        allergiesList.innerHTML = "";
+        if (patient_info.allergies && patient_info.allergies.length > 0) {
+          patient_info.allergies.forEach((a) => {
+            const li = document.createElement("li");
+            li.textContent = a;
+            allergiesList.appendChild(li);
+          });
+        } else {
+          allergiesList.innerHTML = "<li>No allergies documented</li>";
+        }
+
+        // Lifestyle Advice
+        const adviceList = document.getElementById("adviceList");
+        adviceList.innerHTML = "";
+        if (
+          prescription.lifestyle_advice &&
+          prescription.lifestyle_advice.length > 0
+        ) {
+          prescription.lifestyle_advice.forEach((advice) => {
+            const li = document.createElement("li");
+            li.textContent = advice;
+            adviceList.appendChild(li);
+          });
+        } else {
+          adviceList.innerHTML = "<li>No lifestyle advice provided</li>";
+        }
+
+        // Follow Up
+        document.getElementById("followUp").textContent =
+          prescription.follow_up || "Not specified";
+
+        resultSection.classList.remove("hidden");
+        messageInfo.classList.add("hidden");
+      }
+
+      function showError(message) {
+        errorAlert.textContent = message;
+        errorAlert.classList.remove("hidden");
+      }
+
+      function hideError() {
+        errorAlert.classList.add("hidden");
+      }
+
+      function showSuccess(message) {
+        successAlert.textContent = message;
+        successAlert.classList.remove("hidden");
+      }
+
+      function hideSuccess() {
+        successAlert.classList.add("hidden");
+      }
+    </script>
+  </body>
+</html>

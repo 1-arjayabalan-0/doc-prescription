@@ -235,7 +235,7 @@
 
         
         </div>
-        <button
+        <!-- <button
           class="absolute top-1/2 -translate-y-1/2 -left-4 z-10 w-8 h-8 flex items-center justify-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full shadow-md hover:bg-slate-50 dark:hover:bg-slate-700 text-medical-blue"
           id="sidebar-toggle" style="    right: -15px;
     left: auto;
@@ -243,7 +243,7 @@
     transform: translateY(-50%);">
           <span class="material-symbols-outlined transition-transform duration-300 ease-in-out"
             id="toggle-icon">chevron_left</span>
-        </button>
+        </button> -->
       </aside>
       <main class="flex-1 flex flex-col gap-8 p-4 sm:p-6 lg:p-8 relative transition-all duration-300 ease-in-out"
         id="main-content">
@@ -344,14 +344,21 @@
             <div class="flex gap-2">
               <button
                 class="flex items-center justify-center gap-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors print-button"
-                onclick="window.print()" id="print-btn">
+                onclick="printPres()" id="print-btn">
                 <span class="material-symbols-outlined">print</span>
                 <span>Print</span>
+              </button>
+              <button
+                class="flex items-center justify-center gap-1 px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors print-button"
+                onclick="downloadPres()" id="download-pres-btn">
+                <span class="material-symbols-outlined">print</span>
+                <span>Download</span>
               </button>
             </div>
           </div>
 
           <div
+            id="prescription_container"
             class="flex flex-col gap-6 p-6 sm:p-8 bg-white dark:bg-slate-800/50 rounded-xl border-2 border-medical-blue/20 shadow-lg">
             <!-- Prescription Header -->
             <div class="bg-slate-900 dark:bg-slate-700 text-white p-4 text-center">
@@ -424,6 +431,17 @@
                 class="text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
 
                 <ul id="allergiesList"></ul>
+              </div>
+
+            </div>
+            <div class="flex flex-col">
+              <h4 class="text-base font-bold text-slate-800 dark:text-slate-200">
+                Medical History :
+              </h4>
+              <div
+                class="text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+
+                <ul id="historyList"></ul>
               </div>
 
             </div>
@@ -542,20 +560,20 @@
 
 
     // Toggle sidebar
-    sidebarToggle.addEventListener("click", () => {
-      if (isSidebarOpen) {
-        sidebar.classList.remove("sidebar-open");
-        sidebar.classList.add("sidebar-closed");
-        mainContent.classList.add("main-content-expanded");
-        toggleIcon.style.transform = "rotate(180deg)";
-      } else {
-        sidebar.classList.remove("sidebar-closed");
-        sidebar.classList.add("sidebar-open");
-        mainContent.classList.remove("main-content-expanded");
-        toggleIcon.style.transform = "rotate(0deg)";
-      }
-      isSidebarOpen = !isSidebarOpen;
-    });
+    // sidebarToggle.addEventListener("click", () => {
+    //   if (isSidebarOpen) {
+    //     sidebar.classList.remove("sidebar-open");
+    //     sidebar.classList.add("sidebar-closed");
+    //     mainContent.classList.add("main-content-expanded");
+    //     toggleIcon.style.transform = "rotate(180deg)";
+    //   } else {
+    //     sidebar.classList.remove("sidebar-closed");
+    //     sidebar.classList.add("sidebar-open");
+    //     mainContent.classList.remove("main-content-expanded");
+    //     toggleIcon.style.transform = "rotate(0deg)";
+    //   }
+    //   isSidebarOpen = !isSidebarOpen;
+    // });
 
 
     function renderMedications(meds) {
@@ -836,9 +854,180 @@
     }
 
     // Print functionality
-    document.getElementById("print-btn").addEventListener("click", function () {
-      window.print();
-    });
+    function printPres() {
+      const printContent = document.getElementById("prescription_container").innerHTML;
+      const printWindow = window.open('', '', 'width=900,height=650');
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Prescription</title>
+              <style>
+                body {
+                  font-family: "Inter", sans-serif;
+                }
+
+                .waveform {
+                  display: flex;
+                  align-items: center;
+                  height: 48px;
+                  gap: 3px;
+                }
+
+                .waveform .bar {
+                  width: 4px;
+                  background-color: #1d88ea;
+                  border-radius: 999px;
+                  animation: wave 1.5s ease-in-out infinite;
+                }
+
+                @keyframes wave {
+
+                  0%,
+                  100% {
+                    transform: scaleY(0.2);
+                  }
+
+                  50% {
+                    transform: scaleY(1);
+                  }
+                }
+
+                .sidebar {
+                  transition: width 0.3s ease-in-out, padding 0.3s ease-in-out,
+                    transform 0.3s ease-in-out;
+                  will-change: width;
+                }
+
+                .sidebar-open {
+                  width: 384px;
+                }
+
+                .sidebar-closed {
+                  width: 0px;
+                  padding-left: 0;
+                  padding-right: 0;
+                  overflow: hidden;
+                }
+
+                .main-content-expanded {
+                  width: 100%;
+                }
+
+                /* Additional styles to maintain existing functionality */
+                .hidden {
+                  display: none;
+                }
+
+                input[type="file"] {
+                  display: none;
+                }
+
+                .loader {
+                  border: 5px solid #f3f3f3;
+                  border-top: 5px solid #1d88ea;
+                  border-radius: 50%;
+                  width: 60px;
+                  height: 60px;
+                  animation: spin 1s linear infinite;
+                  margin: 20px auto;
+                }
+
+                @keyframes spin {
+                  0% {
+                    transform: rotate(0deg);
+                  }
+
+                  100% {
+                    transform: rotate(360deg);
+                  }
+                }
+
+                .alert {
+                  padding: 15px 20px;
+                  border-radius: 10px;
+                  margin: 20px 0;
+                  font-weight: 500;
+                  position: absolute;
+                  top: 50px;
+                  right: 50px;
+                  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.09);
+                }
+
+                .alert-error {
+                  background: #fee2e2;
+                  color: #dc2626;
+                  border: 2px solid #fca5a5;
+                }
+
+                .alert-success {
+                  background: #d1fae5;
+                  color: #065f46;
+                  border: 2px solid #6ee7b7;
+                }
+
+                /* Print Styles */
+                @media print {
+                  body {
+                    background: white;
+                  }
+
+                  header,
+                  .sidebar,
+                  button:not(.print-button) {
+                    display: none;
+                  }
+
+                  #result-section {
+                    display: block !important;
+                  }
+
+                  .main-content {
+                    padding: 0;
+                    margin: 0;
+                  }
+
+                  .prescription-card {
+                    border: none;
+                    box-shadow: none;
+                  }
+                }
+
+                /* Responsive styles for different screen sizes */
+                @media (max-width: 768px) {
+                  .sidebar-open {
+                    width: 100%;
+                    position: fixed;
+                    z-index: 50;
+                  }
+
+                  #sidebar-toggle {
+                    z-index: 60;
+                  }
+                }
+
+                @media (max-width: 640px) {
+                  .flex-col-sm {
+                    flex-direction: column;
+                  }
+
+                  .w-full-sm {
+                    width: 100%;
+                  }
+                }
+              </style>
+          </head>
+          <body>${printContent}</body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    }
+    function downloadPres() {
+      var printDoc = document.getElementById("prescription_container")
+      window.print(printDoc);
+    }
   </script>
 </body>
 
